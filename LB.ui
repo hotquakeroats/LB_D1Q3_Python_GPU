@@ -405,7 +405,7 @@
      <property name="title">
       <string>Constraints</string>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -825,16 +825,28 @@
    <widget class="QSplitter" name="splitterGraphConfig">
     <property name="geometry">
      <rect>
-      <x>990</x>
-      <y>10</y>
-      <width>591</width>
+      <x>1110</x>
+      <y>15</y>
+      <width>475</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
     </property>
     <widget class="QComboBox" name="plotComponentBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <item>
       <property name="text">
        <string>Component 1</string>
@@ -842,6 +854,12 @@
      </item>
     </widget>
     <widget class="QComboBox" name="plotLineTypeBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <item>
       <property name="text">
        <string>Solid Line</string>
@@ -864,6 +882,12 @@
      </item>
     </widget>
     <widget class="QComboBox" name="plotLineColorBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <item>
       <property name="text">
        <string>Black Line</string>
@@ -901,6 +925,12 @@
      </item>
     </widget>
     <widget class="QComboBox" name="plotLineThicknessBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <item>
       <property name="text">
        <string>Thickness 1</string>
@@ -918,6 +948,12 @@
      </item>
     </widget>
     <widget class="QComboBox" name="plotLineSymbols">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <item>
       <property name="text">
        <string>No Symbols</string>
