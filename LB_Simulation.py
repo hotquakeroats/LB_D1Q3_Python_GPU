@@ -19,7 +19,7 @@ class LB_Simulation(QtWidgets.QMainWindow):
         
         timer = QtCore.QTimer(self)
         timer.timeout.connect(self.update_ui_vars)
-        timer.start(33) # 33 ms update rate
+        timer.start(10) # 10 ms update rate
         
         self.test_stop = 0
         
@@ -28,34 +28,33 @@ class LB_Simulation(QtWidgets.QMainWindow):
         self.ui.lineEditN1Liquid.setText(str(LB_globals.n1_liquid))
         self.ui.lineEditN1Vapor.setText(str(LB_globals.n1_vapor))
         
-        self.ui.stepButton.clicked.connect(self.discrete_step)
-        self.ui.startSimButton.clicked.connect(self.iterate_step)
+        self.ui.stepButton.clicked.connect(self.test_discrete_step)
+        self.ui.startSimButton.clicked.connect(self.test_iterate_step)
         
     def update_ui_vars(self):
         self.ui.lcdIterations.display(LB_globals.iterations)
         
-    def discrete_step(self):
+        if (LB_globals.iterations > 100000):
+            LB_globals.done = True
+            
+    def test_discrete_step(self):
         LB_globals.iterations += LB_globals.step_size
         
-    def iterate_step(self):
+    def test_iterate_step(self):
         step_iterator = LB_Iteration()
         self.threadpool.start(step_iterator)
             
             
 class LB_Iteration(QtCore.QRunnable):
     
-#     def __init__(self):    # this isn't needed until I override the parent/QRunnable __init__
-#         something_else...
-#         super().__init__()
+    def __init__(self):
+        super(LB_Iteration, self).__init__()
     
     @QtCore.pyqtSlot()
     def run(self):
         while(not LB_globals.done):
-            if (LB_globals.iterations == 10000000):
-                LB_globals.done = True
-            else: 
-                LB_globals.iterations += 1
-                
+            LB_globals.iterations += 1
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
