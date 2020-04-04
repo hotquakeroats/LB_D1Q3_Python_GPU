@@ -185,13 +185,13 @@ useBoundaryConditionsPeriodic = True    # default periodic BCs
 autoKappaGammaMu = True
 
 # GUI
-global next_step, Pause, done, step_size, iterations, collectData, wall, phase_iterations
+global next_step, run_sim, exit_sim, step_size, iterations, collectData, wall, phase_iterations
 next_step = 0
-Pause = 1
-done = False
+run_sim = False
+# exit_sim = False
 step_size = 10
 iterations = 0
 collectData = 0
 wall = XDIM * 0.5
-phase_iterations = 0
-    
+iter_size = 100000
+iter_stop = 0
