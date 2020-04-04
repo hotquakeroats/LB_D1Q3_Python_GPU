@@ -8,85 +8,85 @@ XDIM = 201  # lattice length
 #
 
 # Equilibrium distribution of each component velocities
-f1_0 = numpy.zeroes(XDIM)   # the static vector
-f1_1 = numpy.zeroes(XDIM)   # +1 lattice space
-f1_2 = numpy.zeroes(XDIM)   # -1 lattice space
+f1_0 = numpy.zeros(XDIM)   # the static vector
+f1_1 = numpy.zeros(XDIM)   # +1 lattice space
+f1_2 = numpy.zeros(XDIM)   # -1 lattice space
 
-psi1 = numpy.zeroes(XDIM) 
+psi1 = numpy.zeros(XDIM) 
 
 # Number densities of each component
-n1 = numpy.zeroes(XDIM)   # 1st component mass/density
+n1 = numpy.zeros(XDIM)   # 1st component mass/density
 
 # *freeEnergyArray = 
 
 # Component and bulk velocities
-u1 =  numpy.zeroes(XDIM)
-uHat1 =  numpy.zeroes(XDIM)
+u1 =  numpy.zeros(XDIM)
+uHat1 =  numpy.zeros(XDIM)
 
 # Component thermodynamic properties
-mu1 = numpy.zeroes(XDIM)    # chemical potential
-muNonIdeal1 = numpy.zeroes(XDIM)
-muCriticalConstants1 = numpy.zeroes(XDIM)
-muVDWConstants1 = numpy.zeroes(XDIM)
-muCCMinusVDW1 = numpy.zeroes(XDIM)
-muGradPMethod = numpy.zeroes(XDIM)
-muGradMuMethod = numpy.zeroes(XDIM)
-muPressureMethod = numpy.zeroes(XDIM)
+mu1 = numpy.zeros(XDIM)    # chemical potential
+muNonIdeal1 = numpy.zeros(XDIM)
+muCriticalConstants1 = numpy.zeros(XDIM)
+muVDWConstants1 = numpy.zeros(XDIM)
+muCCMinusVDW1 = numpy.zeros(XDIM)
+muGradPMethod = numpy.zeros(XDIM)
+muGradMuMethod = numpy.zeros(XDIM)
+muPressureMethod = numpy.zeros(XDIM)
 
-pressure = numpy.zeroes(XDIM)
-pressure1 = numpy.zeroes(XDIM)
-pressureNonIdeal1 = numpy.zeroes(XDIM)
-pressureCorrected1 = numpy.zeroes(XDIM)
-pressureGradPMethod = numpy.zeroes(XDIM)
-pressureGradMuMethod = numpy.zeroes(XDIM)
-pressurePressureMethod = numpy.zeroes(XDIM)
-pressureCriticalConstants = numpy.zeroes(XDIM)
-pressureVDWConstants = numpy.zeroes(XDIM)
-pressureCCMinusVDW = numpy.zeroes(XDIM)
-correctionsPressure1 = numpy.zeroes(XDIM)
-correctionsPressureDisplay1 = numpy.zeroes(XDIM)
-pressureTest = numpy.zeroes(XDIM)
-pressureTestZero = numpy.zeroes(XDIM)
-pressureTest1 = numpy.zeroes(XDIM)
-pressureTest2 = numpy.zeroes(XDIM)
-pressureTest3 = numpy.zeroes(XDIM)
-pressureTest4 = numpy.zeroes(XDIM)
-pressureTest5 = numpy.zeroes(XDIM)
-pressureTest6 = numpy.zeroes(XDIM)
+pressure = numpy.zeros(XDIM)
+pressure1 = numpy.zeros(XDIM)
+pressureNonIdeal1 = numpy.zeros(XDIM)
+pressureCorrected1 = numpy.zeros(XDIM)
+pressureGradPMethod = numpy.zeros(XDIM)
+pressureGradMuMethod = numpy.zeros(XDIM)
+pressurePressureMethod = numpy.zeros(XDIM)
+pressureCriticalConstants = numpy.zeros(XDIM)
+pressureVDWConstants = numpy.zeros(XDIM)
+pressureCCMinusVDW = numpy.zeros(XDIM)
+correctionsPressure1 = numpy.zeros(XDIM)
+correctionsPressureDisplay1 = numpy.zeros(XDIM)
+pressureTest = numpy.zeros(XDIM)
+pressureTestZero = numpy.zeros(XDIM)
+pressureTest1 = numpy.zeros(XDIM)
+pressureTest2 = numpy.zeros(XDIM)
+pressureTest3 = numpy.zeros(XDIM)
+pressureTest4 = numpy.zeros(XDIM)
+pressureTest5 = numpy.zeros(XDIM)
+pressureTest6 = numpy.zeros(XDIM)
 
-dni = numpy.zeroes(XDIM)
-ddni = numpy.zeroes(XDIM)
-dpi = numpy.zeroes(XDIM)
-ddpi = numpy.zeroes(XDIM)
-p = numpy.zeroes(XDIM)
-pni = numpy.zeroes(XDIM)
-pf = numpy.zeroes(XDIM)
-#pff = numpy.zeroes(XDIM)
-PF = numpy.zeroes(XDIM)
+dni = numpy.zeros(XDIM)
+ddni = numpy.zeros(XDIM)
+dpi = numpy.zeros(XDIM)
+ddpi = numpy.zeros(XDIM)
+p = numpy.zeros(XDIM)
+pni = numpy.zeros(XDIM)
+pf = numpy.zeros(XDIM)
+#pff = numpy.zeros(XDIM)
+PF = numpy.zeros(XDIM)
 
 # Friction forces for each component velocity
-F1_0 = numpy.zeroes(XDIM)
-F1_1 = numpy.zeroes(XDIM)
-F1_2 = numpy.zeroes(XDIM)
+F1_0 = numpy.zeros(XDIM)
+F1_1 = numpy.zeros(XDIM)
+F1_2 = numpy.zeros(XDIM)
 
 # Forces on each component =  potential and friction
-F1 = numpy.zeroes(XDIM)
-F1GradPMethod = numpy.zeroes(XDIM)
-F1GradMuMethod = numpy.zeroes(XDIM)
-F1GradPGradMuDifference = numpy.zeroes(XDIM)
-Forces = numpy.zeroes(XDIM)
+F1 = numpy.zeros(XDIM)
+F1GradPMethod = numpy.zeros(XDIM)
+F1GradMuMethod = numpy.zeros(XDIM)
+F1GradPGradMuDifference = numpy.zeros(XDIM)
+Forces = numpy.zeros(XDIM)
 
-A = numpy.zeroes(XDIM)  # pressure method change to the density distributions
+A = numpy.zeros(XDIM)  # pressure method change to the density distributions
 
-gradP = numpy.zeroes(XDIM)
-rhoGradMu = numpy.zeroes(XDIM)
-gradPMinusRhoGradMu = numpy.zeroes(XDIM)
+gradP = numpy.zeros(XDIM)
+rhoGradMu = numpy.zeros(XDIM)
+gradPMinusRhoGradMu = numpy.zeros(XDIM)
 
 # Graph/GUI variables
-u1g = numpy.zeroes(XDIM)
-#pg1 = numpy.zeroes(XDIM)
-tg = numpy.zeroes(XDIM)
-#mu1g = numpy.zeroes(XDIM)
+u1g = numpy.zeros(XDIM)
+#pg1 = numpy.zeros(XDIM)
+tg = numpy.zeros(XDIM)
+#mu1g = numpy.zeros(XDIM)
 
 
 #
@@ -95,7 +95,7 @@ tg = numpy.zeroes(XDIM)
 
 # Initial densities of each component
 n1_liquid = 1.27
-n1_gas = 0.6
+n1_vapor = 0.6
 
 # Total amount of each component
 rho1 = 0.0
@@ -153,8 +153,8 @@ tgreq = 0
 mu1greq = 0 # graph requests
 next_step = 0
 Pause = 1
-done = 0
-Repeat = 10
+done = False
+step_size = 10
 iterations = 0
 collectData = 0
 wall = XDIM * 0.5
