@@ -94,6 +94,7 @@ tg = numpy.zeros(XDIM)
 #
 
 # Initial densities of each component
+global n1_liquid, n1_vapor
 n1_liquid = 1.27
 n1_vapor = 0.6
 
@@ -119,7 +120,7 @@ Amp = 0.01
 tau = 1.0
 oneOverTau = 1.0    # 1/tau from write-up (relaxation constant)
 g = 0               # gravitational acceleration term
-lmbda = 1.0        # friction (F12) coefficient
+lmbda = 1.0        # friction (F12) coefficient; lambda is a Python reserved keyword
 gammaP = 1.0        # pressure coefficient to control the rate of forcing per time step
 gammaMu = 1.0       # chemical potential coefficient to control the rate of forcing per time step
 kappa = 0.1         # coefficient of gradient corrections
@@ -146,11 +147,7 @@ useBoundaryConditionsPeriodic = True    # default periodic BCs
 autoKappaGammaMu = True
 
 # GUI
-ulreq = 0
-ugreq = 0
-pgreq = 0
-tgreq = 0
-mu1greq = 0 # graph requests
+global done, step_size, iterations
 next_step = 0
 Pause = 1
 done = False
@@ -159,3 +156,4 @@ iterations = 0
 collectData = 0
 wall = XDIM * 0.5
 phase_iterations = 0
+    
