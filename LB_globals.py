@@ -26,7 +26,7 @@ psi1 = numpy.zeros(XDIM)
 
 # Number densities of each component
 global n1
-n1 = numpy.zeros(XDIM)   # 1st component mass/density
+n1 = numpy.ones(XDIM)   # 1st component mass/density
 
 # *freeEnergyArray = 
 
@@ -181,6 +181,7 @@ useChemicalPotentialCriticalParameters = False  # default use VDW constants
 useChemicalPotentialsCoupled = False  # chooses between independent or coupled mu's
 useChemicalPotentialNonIdeal = False    # default use full mu (not non-ideal part)
 lnExplosion = False
+useDensityProfileStep = False
 useBoundaryConditionsPeriodic = True    # default periodic BCs
 autoKappaGammaMu = True
 
@@ -192,6 +193,37 @@ run_sim = False
 step_size = 10
 iterations = 0
 collectData = 0
-wall = XDIM * 0.5
 iter_size = 100000
 iter_stop = 0
+
+
+#######################################################
+# Connect UI fields to initialized globals from above #
+#######################################################
+
+def init_ui_vars(window):
+    window.lineEditStepSize.setText(str(step_size))
+    window.lineEditIterSize.setText(str(iter_size))
+    
+    window.lineEditN1Liquid.setText(str(n1_liquid))
+    window.lineEditN1Vapor.setText(str(n1_vapor))
+    window.lineEditOmega.setText(str(oneOverTau))
+    window.lineEditAmp.setText(str(Amp))
+    window.lineEditTc.setText(str(tc))
+    window.lineEditN0.setText(str(n0))
+    window.lineEditNc.setText(str(nc))
+    window.lineEditT0.setText(str(T0))
+    window.lineEditPc.setText(str(pc))
+    window.lineEditTheta.setText(str(theta))
+    window.lineEditTheta.home(False)
+    window.lineEditG.setText(str(g))
+    window.lineEditLambda.setText(str(lmbda))
+    window.lineEditA1.setText(str(a1))
+    window.lineEditB1.setText(str(b1))
+    window.lineEditB1.home(False)
+    window.lineEditGammaP.setText(str(gammaP))
+    window.lineEditGammaMu.setText(str(gammaMu))
+    window.lineEditKappa.setText(str(kappa))
+    window.lineEditHoldychCorrection.setText(str(pressureMethodCoefficient))
+    window.lineEditHoldychCorrection.home(False)
+    window.lineEditLaplaceCorrection.setText(str(pressureMethodCorrection))
