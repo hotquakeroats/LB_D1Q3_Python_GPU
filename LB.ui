@@ -71,9 +71,9 @@
     <widget class="QPushButton" name="startSimButton">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>170</x>
        <y>70</y>
-       <width>301</width>
+       <width>141</width>
        <height>23</height>
       </rect>
      </property>
@@ -84,9 +84,9 @@
     <widget class="QPushButton" name="stepButton">
      <property name="geometry">
       <rect>
-       <x>190</x>
+       <x>170</x>
        <y>40</y>
-       <width>121</width>
+       <width>141</width>
        <height>23</height>
       </rect>
      </property>
@@ -144,7 +144,7 @@
       <rect>
        <x>70</x>
        <y>42</y>
-       <width>113</width>
+       <width>91</width>
        <height>20</height>
       </rect>
      </property>
@@ -232,6 +232,12 @@
       <property name="text">
        <string>Random</string>
       </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+      <attribute name="buttonGroup">
+       <string notr="true">buttonGroupDensityProfile</string>
+      </attribute>
      </widget>
      <widget class="QRadioButton" name="radioDensityProfileStep">
       <property name="geometry">
@@ -245,6 +251,9 @@
       <property name="text">
        <string>Step</string>
       </property>
+      <attribute name="buttonGroup">
+       <string notr="true">buttonGroupDensityProfile</string>
+      </attribute>
      </widget>
      <widget class="QLabel" name="labelDensityProfileInit">
       <property name="geometry">
@@ -264,7 +273,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>216</y>
+       <y>215</y>
        <width>301</width>
        <height>181</height>
       </rect>
@@ -273,6 +282,9 @@
       <string>Data Generation</string>
      </property>
      <widget class="QPushButton" name="getDensityProfileButton">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -286,6 +298,9 @@
       </property>
      </widget>
      <widget class="QPushButton" name="theoryPhaseDiagTempButton">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>180</x>
@@ -299,6 +314,9 @@
       </property>
      </widget>
      <widget class="QPushButton" name="theoryPhaseDiagPressButton">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>180</x>
@@ -312,6 +330,9 @@
       </property>
      </widget>
      <widget class="QPushButton" name="theoryPhaseDiagChemPotButton">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>180</x>
@@ -344,6 +365,9 @@
       </property>
      </widget>
      <widget class="QPushButton" name="lbPhaseDiagTempButton">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -376,6 +400,9 @@
       </property>
      </widget>
      <widget class="QPushButton" name="lbPhaseDiagPressButton">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -389,6 +416,9 @@
       </property>
      </widget>
      <widget class="QPushButton" name="lbPhaseDiagChemPotButton">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -406,9 +436,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>405</y>
+       <y>400</y>
        <width>301</width>
-       <height>261</height>
+       <height>251</height>
       </rect>
      </property>
      <property name="title">
@@ -424,6 +454,177 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayoutConstraints">
+       <item row="7" column="3" colspan="3">
+        <widget class="QPushButton" name="autoKappaGammaMuButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Auto kappa, gamma-mu</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="5">
+        <widget class="QLineEdit" name="lineEditB1"/>
+       </item>
+       <item row="6" column="0" colspan="2">
+        <widget class="QLabel" name="labelGammaP">
+         <property name="text">
+          <string>gamma-P</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="3" colspan="2">
+        <widget class="QLabel" name="labelGammaMu">
+         <property name="text">
+          <string>gamma-mu</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0" colspan="2">
+        <widget class="QLabel" name="labelKappa">
+         <property name="text">
+          <string>kappa</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1" colspan="2">
+        <widget class="QLineEdit" name="lineEditNc">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="labelNc">
+         <property name="text">
+          <string>nc</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="labelTc">
+         <property name="text">
+          <string>tc</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="4">
+        <widget class="QLabel" name="labelLambda">
+         <property name="text">
+          <string>lambda</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="5">
+        <widget class="QLineEdit" name="lineEditN0"/>
+       </item>
+       <item row="1" column="4">
+        <widget class="QLabel" name="labelN0">
+         <property name="text">
+          <string>n0</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="5">
+        <widget class="QLineEdit" name="lineEditAmp"/>
+       </item>
+       <item row="6" column="2">
+        <widget class="QLineEdit" name="lineEditGammaP">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="4">
+        <widget class="QLabel" name="labelTheta">
+         <property name="text">
+          <string>theta</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="4">
+        <widget class="QLabel" name="labelB1">
+         <property name="text">
+          <string>b1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1" colspan="2">
+        <widget class="QLineEdit" name="lineEditA1">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1" colspan="2">
+        <widget class="QLineEdit" name="lineEditPc">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="5">
+        <widget class="QLineEdit" name="lineEditTheta">
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1" colspan="2">
+        <widget class="QLineEdit" name="lineEditG">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="5">
+        <widget class="QLineEdit" name="lineEditLambda"/>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="labelPc">
+         <property name="text">
+          <string>pc</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="labelG">
+         <property name="text">
+          <string>g</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="2">
+        <widget class="QLineEdit" name="lineEditKappa">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="4">
+        <widget class="QLabel" name="labelT0">
+         <property name="text">
+          <string>T0</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="5">
+        <widget class="QLineEdit" name="lineEditT0"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="labelA1">
+         <property name="text">
+          <string>a1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="5">
+        <widget class="QLineEdit" name="lineEditGammaMu"/>
+       </item>
+       <item row="1" column="1" colspan="2">
+        <widget class="QLineEdit" name="lineEditTc"/>
+       </item>
        <item row="0" column="0">
         <widget class="QLabel" name="labelOmega">
          <property name="text">
@@ -441,184 +642,6 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="5">
-        <widget class="QLineEdit" name="lineEditAmp"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="labelTc">
-         <property name="text">
-          <string>tc</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1" colspan="2">
-        <widget class="QLineEdit" name="lineEditTc"/>
-       </item>
-       <item row="1" column="4">
-        <widget class="QLabel" name="labelN0">
-         <property name="text">
-          <string>n0</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="5">
-        <widget class="QLineEdit" name="lineEditN0"/>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="labelNc">
-         <property name="text">
-          <string>nc</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1" colspan="2">
-        <widget class="QLineEdit" name="lineEditNc">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="4">
-        <widget class="QLabel" name="labelT0">
-         <property name="text">
-          <string>T0</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="5">
-        <widget class="QLineEdit" name="lineEditT0"/>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="labelPc">
-         <property name="text">
-          <string>pc</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1" colspan="2">
-        <widget class="QLineEdit" name="lineEditPc">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="4">
-        <widget class="QLabel" name="labelTheta">
-         <property name="text">
-          <string>theta</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="5">
-        <widget class="QLineEdit" name="lineEditTheta"/>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="labelG">
-         <property name="text">
-          <string>g</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1" colspan="2">
-        <widget class="QLineEdit" name="lineEditG">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="5">
-        <widget class="QLineEdit" name="lineEditLambda"/>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="labelA1">
-         <property name="text">
-          <string>a1</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1" colspan="2">
-        <widget class="QLineEdit" name="lineEditA1">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="5">
-        <widget class="QLineEdit" name="lineEditB1"/>
-       </item>
-       <item row="6" column="0" colspan="4">
-        <widget class="QLabel" name="labelPressMethodCorrection">
-         <property name="text">
-          <string>pressureMethodCorrection</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="4" colspan="2">
-        <widget class="QLineEdit" name="lineEditPressMethodCorrection">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0" colspan="2">
-        <widget class="QLabel" name="labelGammaP">
-         <property name="text">
-          <string>gamma-P</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="2">
-        <widget class="QLineEdit" name="lineEditGammaP">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="3" colspan="2">
-        <widget class="QLabel" name="labelGammaMu">
-         <property name="text">
-          <string>gamma-mu</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="5">
-        <widget class="QLineEdit" name="lineEditGammaMu"/>
-       </item>
-       <item row="8" column="0" colspan="2">
-        <widget class="QLabel" name="labelKappa">
-         <property name="text">
-          <string>kappa</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="2">
-        <widget class="QLineEdit" name="lineEditKappa">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="3" colspan="3">
-        <widget class="QPushButton" name="autoKappaGammaMuButton">
-         <property name="text">
-          <string>Auto kappa, gamma-mu</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="4">
-        <widget class="QLabel" name="labelLambda">
-         <property name="text">
-          <string>lambda</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="4">
-        <widget class="QLabel" name="labelB1">
-         <property name="text">
-          <string>b1</string>
-         </property>
-        </widget>
-       </item>
       </layout>
      </widget>
     </widget>
@@ -626,9 +649,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>673</y>
+       <y>656</y>
        <width>301</width>
-       <height>151</height>
+       <height>167</height>
       </rect>
      </property>
      <property name="title">
@@ -646,6 +669,9 @@
       <property name="text">
        <string>Force new (grad-P)</string>
       </property>
+      <attribute name="buttonGroup">
+       <string notr="true">buttonGroupAlgorithms</string>
+      </attribute>
      </widget>
      <widget class="QRadioButton" name="radioForceNewGradMu">
       <property name="geometry">
@@ -659,12 +685,18 @@
       <property name="text">
        <string>Force new (grad-mu)</string>
       </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+      <attribute name="buttonGroup">
+       <string notr="true">buttonGroupAlgorithms</string>
+      </attribute>
      </widget>
      <widget class="QRadioButton" name="radioForceBasic">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>87</y>
+        <y>63</y>
         <width>81</width>
         <height>17</height>
        </rect>
@@ -672,12 +704,15 @@
       <property name="text">
        <string>Force - basic</string>
       </property>
+      <attribute name="buttonGroup">
+       <string notr="true">buttonGroupAlgorithms</string>
+      </attribute>
      </widget>
      <widget class="QRadioButton" name="radioPressureMethod">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>65</y>
+        <y>142</y>
         <width>101</width>
         <height>17</height>
        </rect>
@@ -685,12 +720,15 @@
       <property name="text">
        <string>Pressure method</string>
       </property>
+      <attribute name="buttonGroup">
+       <string notr="true">buttonGroupAlgorithms</string>
+      </attribute>
      </widget>
      <widget class="QRadioButton" name="radioForceAlexander">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>108</y>
+        <y>84</y>
         <width>111</width>
         <height>17</height>
        </rect>
@@ -698,12 +736,15 @@
       <property name="text">
        <string>Force - Alexander</string>
       </property>
+      <attribute name="buttonGroup">
+       <string notr="true">buttonGroupAlgorithms</string>
+      </attribute>
      </widget>
      <widget class="QRadioButton" name="radioForceKyoto">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>130</y>
+        <y>106</y>
         <width>91</width>
         <height>17</height>
        </rect>
@@ -711,12 +752,15 @@
       <property name="text">
        <string>Force - Kyoto</string>
       </property>
+      <attribute name="buttonGroup">
+       <string notr="true">buttonGroupAlgorithms</string>
+      </attribute>
      </widget>
      <widget class="QLabel" name="labelHoldychCorrection">
       <property name="geometry">
        <rect>
         <x>170</x>
-        <y>130</y>
+        <y>142</y>
         <width>51</width>
         <height>16</height>
        </rect>
@@ -726,10 +770,13 @@
       </property>
      </widget>
      <widget class="QLineEdit" name="lineEditHoldychCorrection">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>220</x>
-        <y>128</y>
+        <y>140</y>
         <width>71</width>
         <height>20</height>
        </rect>
@@ -742,7 +789,7 @@
       <property name="geometry">
        <rect>
         <x>170</x>
-        <y>107</y>
+        <y>119</y>
         <width>51</width>
         <height>16</height>
        </rect>
@@ -752,10 +799,13 @@
       </property>
      </widget>
      <widget class="QLineEdit" name="lineEditLaplaceCorrection">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>220</x>
-        <y>105</y>
+        <y>117</y>
         <width>71</width>
         <height>20</height>
        </rect>
@@ -764,71 +814,166 @@
        <string/>
       </property>
      </widget>
-     <widget class="QLabel" name="labelPressMethodCorrections">
+     <widget class="QRadioButton" name="radioPressVdw">
       <property name="geometry">
        <rect>
-        <x>162</x>
-        <y>85</y>
-        <width>131</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Press. Method Corrections</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="checkBoxPressCoupled">
-      <property name="geometry">
-       <rect>
-        <x>170</x>
-        <y>10</y>
-        <width>111</width>
+        <x>165</x>
+        <y>23</y>
+        <width>51</width>
         <height>17</height>
        </rect>
       </property>
       <property name="text">
-       <string>Pressure - coupled</string>
+       <string>VDW</string>
       </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+      <attribute name="buttonGroup">
+       <string notr="true">buttonGroupPressCalc</string>
+      </attribute>
      </widget>
-     <widget class="QCheckBox" name="checkBoxChemPotCoupled">
+     <widget class="QRadioButton" name="radioPressCritConst">
       <property name="geometry">
        <rect>
-        <x>170</x>
-        <y>50</y>
-        <width>121</width>
+        <x>215</x>
+        <y>23</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Crit. Const.</string>
+      </property>
+      <attribute name="buttonGroup">
+       <string notr="true">buttonGroupPressCalc</string>
+      </attribute>
+     </widget>
+     <widget class="QRadioButton" name="radioChemPotCritConst">
+      <property name="geometry">
+       <rect>
+        <x>215</x>
+        <y>67</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Crit. Const.</string>
+      </property>
+      <attribute name="buttonGroup">
+       <string notr="true">buttonGroupChemPotCalc</string>
+      </attribute>
+     </widget>
+     <widget class="QRadioButton" name="radioChemPotVdw">
+      <property name="geometry">
+       <rect>
+        <x>165</x>
+        <y>67</y>
+        <width>51</width>
         <height>17</height>
        </rect>
       </property>
       <property name="text">
-       <string>Chem. Pot. - coupled</string>
+       <string>VDW</string>
       </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+      <attribute name="buttonGroup">
+       <string notr="true">buttonGroupChemPotCalc</string>
+      </attribute>
      </widget>
-     <widget class="QCheckBox" name="checkBoxPressCriticalConst">
+     <widget class="QRadioButton" name="radioChemPotNidMethod">
       <property name="geometry">
        <rect>
-        <x>188</x>
-        <y>28</y>
-        <width>111</width>
+        <x>165</x>
+        <y>87</y>
+        <width>51</width>
         <height>17</height>
        </rect>
       </property>
       <property name="text">
-       <string>Critical Constants</string>
+       <string>NID</string>
       </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+      <attribute name="buttonGroup">
+       <string notr="true">buttonGroupChemPotMethod</string>
+      </attribute>
      </widget>
-     <widget class="QCheckBox" name="checkBoxChemPotNid">
+     <widget class="QRadioButton" name="radioChemPotLogMethod">
       <property name="geometry">
        <rect>
-        <x>188</x>
-        <y>68</y>
-        <width>111</width>
-        <height>17</height>
+        <x>215</x>
+        <y>87</y>
+        <width>81</width>
+        <height>16</height>
        </rect>
       </property>
       <property name="text">
-       <string>Non-ideal</string>
+       <string>Log Method</string>
+      </property>
+      <attribute name="buttonGroup">
+       <string notr="true">buttonGroupChemPotMethod</string>
+      </attribute>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>185</x>
+        <y>6</y>
+        <width>101</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Pressure Calculation</string>
       </property>
      </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>184</x>
+        <y>47</y>
+        <width>101</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Chemical Potential</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QLabel" name="labelIterSize">
+     <property name="geometry">
+      <rect>
+       <x>15</x>
+       <y>65</y>
+       <width>47</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Iteration Size</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEditIterSize">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>72</y>
+       <width>91</width>
+       <height>20</height>
+      </rect>
+     </property>
     </widget>
    </widget>
    <widget class="QSplitter" name="splitterGraphConfig">
@@ -1004,5 +1149,45 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>radioPressureMethod</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineEditLaplaceCorrection</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>79</x>
+     <y>856</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>274</x>
+     <y>832</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioPressureMethod</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineEditHoldychCorrection</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>79</x>
+     <y>856</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>274</x>
+     <y>855</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <buttongroups>
+  <buttongroup name="buttonGroupPressCalc"/>
+  <buttongroup name="buttonGroupChemPotCalc"/>
+  <buttongroup name="buttonGroupChemPotMethod"/>
+  <buttongroup name="buttonGroupAlgorithms"/>
+  <buttongroup name="buttonGroupDensityProfile"/>
+ </buttongroups>
 </ui>
