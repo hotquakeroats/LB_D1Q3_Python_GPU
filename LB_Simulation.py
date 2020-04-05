@@ -21,7 +21,7 @@ class LB_Simulation(QtWidgets.QMainWindow):
         
         timer = QtCore.QTimer(self)
         timer.timeout.connect(self.update_ui_vars)
-        timer.start(33) # 33 ms update rate
+        timer.start(33) # 30 Hz update rate
         
     def connect_controls(self):
         self.ui.stepButton.clicked.connect(self.discrete_step)
@@ -34,9 +34,29 @@ class LB_Simulation(QtWidgets.QMainWindow):
         
         self.ui.lineEditN1Liquid.setText(str(LB_globals.n1_liquid))
         self.ui.lineEditN1Vapor.setText(str(LB_globals.n1_vapor))
+        self.ui.lineEditOmega.setText(str(LB_globals.oneOverTau))
+        self.ui.lineEditAmp.setText(str(LB_globals.Amp))
+        self.ui.lineEditTc.setText(str(LB_globals.tc))
+        self.ui.lineEditN0.setText(str(LB_globals.n0))
+        self.ui.lineEditNc.setText(str(LB_globals.nc))
+        self.ui.lineEditT0.setText(str(LB_globals.T0))
+        self.ui.lineEditPc.setText(str(LB_globals.pc))
+        self.ui.lineEditTheta.setText(str(LB_globals.theta))
+        self.ui.lineEditTheta.home(False)
+        self.ui.lineEditG.setText(str(LB_globals.g))
+        self.ui.lineEditLambda.setText(str(LB_globals.lmbda))
+        self.ui.lineEditA1.setText(str(LB_globals.a1))
+        self.ui.lineEditB1.setText(str(LB_globals.b1))
+        self.ui.lineEditB1.home(False)
+        self.ui.lineEditGammaP.setText(str(LB_globals.gammaP))
+        self.ui.lineEditGammaMu.setText(str(LB_globals.gammaMu))
+        self.ui.lineEditKappa.setText(str(LB_globals.kappa))
+        self.ui.lineEditHoldychCorrection.setText(str(LB_globals.pressureMethodCoefficient))
+        self.ui.lineEditHoldychCorrection.home(False)
+        self.ui.lineEditLaplaceCorrection.setText(str(LB_globals.pressureMethodCorrection))
         
     def update_ui_vars(self):
-        self.ui.lcdIterations.display(LB_globals.iterations)    # TODO: (maybe?) crashes @ 2.147 billion
+        self.ui.lcdIterations.display(LB_globals.iterations)    # TODO: (maybe fix?) crashes @ 2.147 billion
         self.update_run_sim_button()
         
     def update_run_sim_button(self):
