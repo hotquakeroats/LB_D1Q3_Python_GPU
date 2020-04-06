@@ -3,7 +3,7 @@ import numpy
 
 
 def initializeRandom():
-    LB_globals.n1 += LB_globals.Amp*(numpy.random.rand(LB_globals.XDIM)-0.5)
+    LB_globals.n1 = LB_globals.n0 + LB_globals.Amp*(numpy.random.rand(LB_globals.XDIM)-0.5)
 
 def initializeSteps():
 
@@ -16,10 +16,10 @@ def initializeSteps():
         if (i < interface-0.25*LB_globals.XDIM):
             transition = 0.5 + 0.5*numpy.tanh((i%LB_globals.XDIM)/LB_globals.interfaceWidth)
             LB_globals.n1[i] = (1.0-transition)*rhoA2 + transition*rhoA1
-        elif (i >= interface-0.25*LB_globals.XDIM and i <= interface+0.25*LB_globals.XDIM):
+        elif (interface-0.25*LB_globals.XDIM <= i <= interface+0.25*LB_globals.XDIM):
             transition = 0.5 + 0.5*numpy.tanh((i-interface)/LB_globals.interfaceWidth)
             LB_globals.n1[i] = (1.0-transition)*rhoA1 + transition*rhoA2
-        else:
+        else:   # TODO: drops straight from liquid to vapor density before end of lattice
             transition = 0.5 + 0.5*numpy.tanh(((i-LB_globals.XDIM)%LB_globals.XDIM)/LB_globals.interfaceWidth)
             LB_globals.n1[i] = (1.0-transition)*rhoA2 + transition*rhoA1
 

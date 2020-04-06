@@ -29,8 +29,8 @@ class LB_Simulation(QtWidgets.QMainWindow):
         self.ui.startSimButton.clicked.connect(self.iterate_step)
         self.ui.initializeButton.clicked.connect(self.init_sim)
         
-        self.ui.radioDensityProfileRandom.toggled.connect(self.init_density_profile)
-#         self.ui.radioDensityProfileStep.toggled.connect(self.init_density_profile)
+        # Trap toggle of 1 button from 2-button group to initialize density profile
+        self.ui.radioDensityProfileRandom.toggled.connect(self.init_density_profile)    
         
     def update_ui_vars(self):
         self.ui.lcdIterations.display(LB_globals.iterations)    # TODO: (maybe fix?) crashes @ 2.147 billion
@@ -52,6 +52,7 @@ class LB_Simulation(QtWidgets.QMainWindow):
     def init_density_profile(self):
         LB_globals.useDensityProfileStep = not LB_globals.useDensityProfileStep
         self.init_sim()
+        print(LB_globals.n1)
         
     def discrete_step(self):
         LB_globals.step_size = int(self.ui.lineEditStepSize.text())
