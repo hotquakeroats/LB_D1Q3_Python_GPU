@@ -17,6 +17,7 @@ class LB_Simulation(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.connect_controls()
         LB_globals.init_ui_vars(self.ui)
+        self.init_sim()
         
         self.threadpool = QtCore.QThreadPool()
         
@@ -47,6 +48,8 @@ class LB_Simulation(QtWidgets.QMainWindow):
         LB_globals.iter_stop = 0
         LB_globals.iterations = 0
         LB_Initialize.initialize()
+        self.ui.widgetDensityPlot.clear()
+        self.ui.widgetDensityPlot.plot(list(range(LB_globals.XDIM)), LB_globals.n1)
         self.ui.startSimButton.setText("Start Simulation")
         
     def init_density_profile(self):
