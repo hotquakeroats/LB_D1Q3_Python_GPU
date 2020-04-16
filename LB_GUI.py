@@ -22,6 +22,9 @@ class Ui_MainWindow(object):
         self.graphTabBox.setObjectName("graphTabBox")
         self.densityTab = QtWidgets.QWidget()
         self.densityTab.setObjectName("densityTab")
+        self.widgetDensityPlot = PlotWidget(self.densityTab)
+        self.widgetDensityPlot.setGeometry(QtCore.QRect(10, 10, 1231, 781))
+        self.widgetDensityPlot.setObjectName("widgetDensityPlot")
         self.graphTabBox.addTab(self.densityTab, "")
         self.velocityTab = QtWidgets.QWidget()
         self.velocityTab.setObjectName("velocityTab")
@@ -496,6 +499,7 @@ class Ui_MainWindow(object):
         self.plotLineSymbols.setItemText(3, _translate("MainWindow", "Triangles"))
         self.plotLineSymbols.setItemText(4, _translate("MainWindow", "Diamonds"))
 
+from pyqtgraph import PlotWidget
 
 if __name__ == "__main__":
     import sys

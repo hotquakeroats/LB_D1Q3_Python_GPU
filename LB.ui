@@ -39,6 +39,16 @@
      <attribute name="title">
       <string>Density</string>
      </attribute>
+     <widget class="PlotWidget" name="widgetDensityPlot" native="true">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>1231</width>
+        <height>781</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="velocityTab">
      <attribute name="title">
@@ -1148,6 +1158,14 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PlotWidget</class>
+   <extends>QWidget</extends>
+   <header>pyqtgraph</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
@@ -1184,10 +1202,10 @@
   </connection>
  </connections>
  <buttongroups>
+  <buttongroup name="buttonGroupChemPotMethod"/>
+  <buttongroup name="buttonGroupDensityProfile"/>
+  <buttongroup name="buttonGroupAlgorithms"/>
   <buttongroup name="buttonGroupPressCalc"/>
   <buttongroup name="buttonGroupChemPotCalc"/>
-  <buttongroup name="buttonGroupChemPotMethod"/>
-  <buttongroup name="buttonGroupAlgorithms"/>
-  <buttongroup name="buttonGroupDensityProfile"/>
  </buttongroups>
 </ui>
