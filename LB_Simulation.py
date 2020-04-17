@@ -55,7 +55,6 @@ class LB_Simulation(QtWidgets.QMainWindow):
     def init_density_profile(self):
         LB_globals.useDensityProfileStep = not LB_globals.useDensityProfileStep
         self.init_sim()
-        print(LB_globals.n1)
         
     def discrete_step(self):
         LB_globals.step_size = int(self.ui.lineEditStepSize.text())

@@ -19,9 +19,10 @@ def initializeSteps():
         elif (interface-0.25*LB_globals.XDIM <= i <= interface+0.25*LB_globals.XDIM):
             transition = 0.5 + 0.5*numpy.tanh((i-interface)/LB_globals.interfaceWidth)
             LB_globals.n1[i] = (1.0-transition)*rhoA1 + transition*rhoA2
-        else:   # TODO: drops straight from liquid to vapor density before end of lattice
+        else:
             transition = 0.5 + 0.5*numpy.tanh(((i-LB_globals.XDIM)%LB_globals.XDIM)/LB_globals.interfaceWidth)
-            LB_globals.n1[i] = (1.0-transition)*rhoA2 + transition*rhoA1
+            LB_globals.n1[i] = (1.0-transition)*rhoA1 + transition*rhoA2
+            
 
 def initialize():
     u = 0
@@ -37,21 +38,10 @@ def initialize():
     LB_globals.a1 = (27./64.)*(LB_globals.tc*LB_globals.tc/LB_globals.pc)
     LB_globals.b1 = LB_globals.tc/(8.*LB_globals.pc)
 
-#     if (initializeProfile == initializeSteps):
-#         if (getTheoreticalDensities() and autoKappaGammaMu):
-#             interfaceWidth = 1.0 / sqrt(4.0*theoreticalRhoVapor*fabs(tc-theta))
-#             kappa = 1.0 / (8.0 * theta * theoreticalRhoVapor)
-#             gammaMu = 1.0 / (6.0 * kappa * theoreticalRhoLiquid)
-#             gammaMu /= 10.0
-#             printf("kappa = %f\tgammaMu = %f\twidth = %f\n", kappa, gammaMu, interfaceWidth)
-
-
     if (LB_globals.useDensityProfileStep):
         initializeSteps()
-        print("step")
     else:
         initializeRandom()
-        print("random")
 
     LB_globals.u1 = numpy.zeros(LB_globals.XDIM)
     LB_globals.uHat1 = numpy.zeros(LB_globals.XDIM)
