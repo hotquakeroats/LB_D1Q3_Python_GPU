@@ -26,8 +26,8 @@ class LB_Simulation(QtWidgets.QMainWindow):
         timer.start(33) # 30 Hz update rate
         
     def connect_controls(self):
-        self.ui.stepButton.clicked.connect(self.discrete_step)
-        self.ui.startSimButton.clicked.connect(self.iterate_step)
+        self.ui.stepButton.clicked.connect(lambda : self.iterate_step(int(self.ui.lineEditStepSize.text())))
+        self.ui.startSimButton.clicked.connect(lambda : self.iterate_step(int(self.ui.lineEditIterSize.text())))
         self.ui.initializeButton.clicked.connect(self.init_sim)
         
         # Trap toggle of 1 button from 2-button group to initialize density profile
@@ -55,17 +55,12 @@ class LB_Simulation(QtWidgets.QMainWindow):
     def init_density_profile(self):
         LB_globals.useDensityProfileStep = not LB_globals.useDensityProfileStep
         self.init_sim()
-        
-    def discrete_step(self):
-        LB_globals.step_size = int(self.ui.lineEditStepSize.text())
-        LB_globals.iterations += LB_globals.step_size
-        
-    def iterate_step(self):
-        LB_globals.iter_size = int(self.ui.lineEditIterSize.text())        
+
+    def iterate_step(self, step_size):
         if LB_globals.iterations > LB_globals.iter_stop:    # catch if step above the stop
             LB_globals.iter_stop = LB_globals.iterations
-        LB_globals.iter_stop += LB_globals.iter_size    # set for the next chunk of iterations
-                
+        LB_globals.iter_stop += step_size    # set for the next chunk of iterations        
+        
         # TODO: Is a new thread created with each click??        
         step_iterator = LB_Iteration()
         self.threadpool.start(step_iterator)
