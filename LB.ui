@@ -703,6 +703,9 @@
       </attribute>
      </widget>
      <widget class="QRadioButton" name="radioForceBasic">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -735,6 +738,9 @@
       </attribute>
      </widget>
      <widget class="QRadioButton" name="radioForceAlexander">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -751,6 +757,9 @@
       </attribute>
      </widget>
      <widget class="QRadioButton" name="radioForceKyoto">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -1202,10 +1211,10 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="buttonGroupChemPotMethod"/>
-  <buttongroup name="buttonGroupDensityProfile"/>
   <buttongroup name="buttonGroupAlgorithms"/>
-  <buttongroup name="buttonGroupPressCalc"/>
+  <buttongroup name="buttonGroupChemPotMethod"/>
   <buttongroup name="buttonGroupChemPotCalc"/>
+  <buttongroup name="buttonGroupDensityProfile"/>
+  <buttongroup name="buttonGroupPressCalc"/>
  </buttongroups>
 </ui>

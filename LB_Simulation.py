@@ -1,3 +1,4 @@
+import LB_collisions
 import LB_globals
 import LB_GUI
 import LB_Initialize
@@ -31,7 +32,12 @@ class LB_Simulation(QtWidgets.QMainWindow):
         self.ui.initializeButton.clicked.connect(self.init_sim)
         
         # Trap toggle of 1 button from 2-button group to initialize density profile
-        self.ui.radioDensityProfileRandom.toggled.connect(self.init_density_profile)    
+        self.ui.radioDensityProfileRandom.toggled.connect(self.init_density_profile)
+        
+        # Read radio buttons to choose collision algorithm
+        self.ui.radioForceNewGradMu.clicked.connect(lambda : LB_collisions.set_collision("collisionForcingNewChemicalPotentialGradient"))
+        self.ui.radioForceNewGradP.clicked.connect(lambda : LB_collisions.set_collision("collisionForcingNewPressureGradient")) 
+        self.ui.radioPressureMethod.clicked.connect(lambda : LB_collisions.set_collision("collisionPressureMethod"))
         
     def update_ui_vars(self):
         self.ui.lcdIterations.display(LB_globals.iterations)    # TODO: (maybe fix?) crashes @ 2.147 billion
@@ -79,6 +85,7 @@ class LB_Iteration(QtCore.QRunnable):
                 LB_globals.run_sim = False
             else: 
                 LB_globals.iterations += 1
+                LB_collisions.iteration()
                 
 
 if __name__ == "__main__":
