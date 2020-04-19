@@ -1,11 +1,11 @@
-import LB_globals
+import LB_globals as lbg
 
 
 def calculateMassAndVelocities():
     # Sweep across the lattice to conserve mass and determine the pressures at each cell
-    LB_globals.n1 = [ sum(f1_tuple) for f1_tuple in zip(LB_globals.f1_0, LB_globals.f1_1, LB_globals.f1_2) ]
-    LB_globals.u1 = [ (x-y)/z if z != 0 else 0 for x, y, z in zip(LB_globals.f1_1, LB_globals.f1_2, LB_globals.n1) ]
-    LB_globals.uHat1 = [ i + 0.5/j*k if j != 0 else 0 for i, j, k in zip(LB_globals.u1, LB_globals.n1, LB_globals.F1) ]
+    lbg.n1 = lbg.f1_0 + lbg.f1_1 + lbg.f1_2
+    lbg.u1 = (lbg.f1_1 - lbg.f1_2) / lbg.n1
+    lbg.uHat1 = lbg.u1 + 0.5 / lbg.n1 * lbg.F1
 
 
 # def calculatePressures():
@@ -237,10 +237,10 @@ def set_collision(collision):
 def iteration():
     # Need to reset the critical and VDW constants each iteration
     # Keeps them all in sync if one is changed during a simulation
-    LB_globals.pc = 3*LB_globals.tc/8
-    LB_globals.nc = LB_globals.pc / ((3/8)*LB_globals.tc)
-    LB_globals.a1 = (27/64)*(LB_globals.tc*LB_globals.tc/LB_globals.pc)
-    LB_globals.b1 = LB_globals.tc/(8*LB_globals.pc)
+    lbg.pc = 3 *lbg.tc / 8
+    lbg.nc = lbg.pc / ((3/8)*lbg.tc)
+    lbg.a1 = (27/64) * (lbg.tc*lbg.tc/lbg.pc)
+    lbg.b1 = lbg.tc /(8*lbg.pc)
 # 
     collision_algorithm()
 #     streaming()

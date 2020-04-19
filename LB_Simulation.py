@@ -1,9 +1,9 @@
+import cProfile
 import LB_collisions
 import LB_globals
 import LB_GUI
 import LB_Initialize
 import sys
-import time
 
 # from LB_globals import *
 from PyQt5 import QtWidgets, QtCore
@@ -79,6 +79,10 @@ class LB_Iteration(QtCore.QRunnable):
     
     @QtCore.pyqtSlot()
     def run(self):
+        
+        profile = cProfile.Profile()
+        profile.enable()
+        
         LB_globals.run_sim = True if LB_globals.run_sim == False else False # toggle every button press
         while(LB_globals.run_sim):
             if (LB_globals.iterations >= LB_globals.iter_stop):
@@ -86,6 +90,9 @@ class LB_Iteration(QtCore.QRunnable):
             else: 
                 LB_globals.iterations += 1
                 LB_collisions.iteration()
+                
+        profile.disable()
+        profile.print_stats(sort='time')        
                 
 
 if __name__ == "__main__":
