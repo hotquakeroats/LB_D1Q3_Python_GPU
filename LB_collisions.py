@@ -1,22 +1,13 @@
-from LB_globals import *
+import LB_globals
 
 
+def calculateMassAndVelocities():
+    # Sweep across the lattice to conserve mass and determine the pressures at each cell
+    LB_globals.n1 = [ sum(f1_tuple) for f1_tuple in zip(LB_globals.f1_0, LB_globals.f1_1, LB_globals.f1_2) ]
+    LB_globals.u1 = [ (x-y)/z if z != 0 else 0 for x, y, z in zip(LB_globals.f1_1, LB_globals.f1_2, LB_globals.n1) ]
+    LB_globals.uHat1 = [ i + 0.5/j*k if j != 0 else 0 for i, j, k in zip(LB_globals.u1, LB_globals.n1, LB_globals.F1) ]
 
-# def calculateMassAndVelocities():
-#     # Sweep across the lattice to conserve mass and determine the pressures at each cell
-#     for (i = 0 i < XDIM i++):
-#         n1[i] = f1_0[i] + f1_1[i] + f1_2[i]         # 1st component mass density for this step
-# 
-#         if (n1[i] != 0):
-#             u1[i] = (f1_1[i]-f1_2[i]) / n1[i]
-# 
-#             # Correction to the display of the mean fluid velocity
-#             # Needed for the forcing methods (pressure method is good with the above)
-#             uHat1[i] = u1[i] + 0.5/n1[i]*F1[i]
-#         else:
-#             u1[i] = 0
-# 
-# 
+
 # def calculatePressures():
 #     i
 #     ip = 0
@@ -157,12 +148,12 @@ def collisionPressureMethod():
 
 
 def collisionForcingNewChemicalPotentialGradient():
-    print("collisionForcingNewChemicalPotentialGradient")
+#     print("collisionForcingNewChemicalPotentialGradient")
 #     i = 0
 #  
 #     iterations++
 #  
-#     calculateMassAndVelocities()
+    calculateMassAndVelocities()
 #     calculatePressures()
 #     calculateChemicalPotentials()
 #  
@@ -246,10 +237,10 @@ def set_collision(collision):
 def iteration():
     # Need to reset the critical and VDW constants each iteration
     # Keeps them all in sync if one is changed during a simulation
-    pc = 3*tc/8
-    nc = pc / ((3/8)*tc)
-    a1 = (27/64)*(tc*tc/pc)
-    b1 = tc/(8*pc)
+    LB_globals.pc = 3*LB_globals.tc/8
+    LB_globals.nc = LB_globals.pc / ((3/8)*LB_globals.tc)
+    LB_globals.a1 = (27/64)*(LB_globals.tc*LB_globals.tc/LB_globals.pc)
+    LB_globals.b1 = LB_globals.tc/(8*LB_globals.pc)
 # 
     collision_algorithm()
 #     streaming()
