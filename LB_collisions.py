@@ -11,10 +11,15 @@ def calculateMassAndVelocities():
 
 
 def calculatePressures():
-    gradN1 = numpy.append(lbg.n1[-1], lbg.n1)
-    gradN1 = numpy.append(gradN1, lbg.n1[0])
-    gradN1 = numpy.gradient(gradN1)
-    print(gradN1[1:-1])
+    lbg.gradN1[1:-1] = lbg.n1
+    lbg.gradN1[0] = lbg.n1[-1]
+    lbg.gradN1[-1] = lbg.gradN1[0]
+    lbg.gradN1 = numpy.gradient(lbg.gradN1)
+    
+    ###
+    # TODO: test applying gradient twice vs own 2nd derivative function
+    
+#     print(lbg.gradN1[1:-1]-lbg.n1)
 #     lbg.pressure = lbg.n1*lbg.theta/(1-lbg.b1*lbg.n1) - lbg.a1*lbg.n1*lbg.n1 - lbg.kappa*lbg.n1*laplace(n1,i) + 0.5*lbg.kappa*gradient(n1,i)*gradient(n1,i)
 
 
