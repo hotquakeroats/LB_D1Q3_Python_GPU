@@ -1,4 +1,6 @@
+import cProfile
 import LB_globals as lbg
+import numpy
 
 
 def calculateMassAndVelocities():
@@ -8,47 +10,14 @@ def calculateMassAndVelocities():
     lbg.uHat1 = lbg.u1 + 0.5 / lbg.n1 * lbg.F1
 
 
-# def calculatePressures():
-#     i
-#     ip = 0
-#     im = 0
-#     omega = 1./oneOverTau
-# 
-#     # Functions to calculate pressures, partial and full
-#     calculatePressurePartial()
-#     calculatePressureTest()
-# 
-#     for (i = 0 i < XDIM i++):
-#         pressureCCMinusVDW[i] = pressureCriticalConstants[i] - pressureVDWConstants[i]
-# 
-#     # For comparison, these loops calculate pressures in the same manner as Alexander's code
-#     # Modified to include the gamma "modulation"
-#     for (i = 0 i < XDIM i++):
-#         ip=(i+1)%XDIM
-#         im=(i+XDIM-1)%XDIM
-# 
-#         dni[i]=gradient(n1,i)
-#         ddni[i]=laplace(n1,i)
-# 
-#         pni[i]=Pni(n1[i],dni[i],ddni[i])
-#         p[i] = P(n1[i],dni[i],ddni[i])
-# 
-#         p[i] *= gammaP
-#         pni[i] *= gammaP
-# 
-#     for (i = 0 i < XDIM i++):
-#         ip=(i+1)%XDIM
-#         im=(i+XDIM-1)%XDIM
-# 
-#         dpi[i]=gradient(pni,i)
-#         ddpi[i]=laplace(p,i)
-# 
-#         Forces[i]=-dpi[i]
-# 
-#         pf[i]=p[i]-0.25*Forces[i]*Forces[i]/n1[i]-(1./omega-0.5)*Forces[i]*Forces[i]/n1[i]+0.25*ddpi[i]-1./12.*ddni[i]
-#         PF[i]=p[i]+0.25*Forces[i]*Forces[i]/n1[i]+0.25*ddpi[i]-1./12.*ddni[i]
-# 
-# 
+def calculatePressures():
+    gradN1 = numpy.append(lbg.n1[-1], lbg.n1)
+    gradN1 = numpy.append(gradN1, lbg.n1[0])
+    gradN1 = numpy.gradient(gradN1)
+    print(gradN1[1:-1])
+#     lbg.pressure = lbg.n1*lbg.theta/(1-lbg.b1*lbg.n1) - lbg.a1*lbg.n1*lbg.n1 - lbg.kappa*lbg.n1*laplace(n1,i) + 0.5*lbg.kappa*gradient(n1,i)*gradient(n1,i)
+
+
 # def calculateChemicalPotentials():
 #     if (useChemicalPotentialCriticalParameters):
 #         for (i = 0 i < XDIM i++):
@@ -154,7 +123,16 @@ def collisionForcingNewChemicalPotentialGradient():
 #     iterations++
 #  
     calculateMassAndVelocities()
-#     calculatePressures()
+    
+#     print(lbg.n1)
+#     profile = cProfile.Profile()
+#     profile.enable()
+        
+    calculatePressures()
+    
+#     profile.disable()
+#     profile.print_stats(sort='time') 
+#     print(lbg.n1)
 #     calculateChemicalPotentials()
 #  
 #     for (i = 0 i < XDIM i++):
