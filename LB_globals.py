@@ -5,6 +5,7 @@ import numpy
 # Globals that DO NOT need to be modified to run a simulation #
 ###############################################################
 XDIM = 201  # lattice length
+x_axis_labels = list(range(XDIM))
 
 
 ############################################################
@@ -76,9 +77,11 @@ pressureTest4 = numpy.zeros(XDIM)
 pressureTest5 = numpy.zeros(XDIM)
 pressureTest6 = numpy.zeros(XDIM)
 
-global gradN1, laplaceN1
+global gradN1, laplaceN1, gradMu1, gradMuNonIdeal1
 gradN1 = numpy.zeros(XDIM+2)
 laplaceN1 = numpy.zeros(XDIM+2)
+gradMu1 = numpy.zeros(XDIM+2)
+gradMuNonIdeal1 = numpy.zeros(XDIM+2)
 
 # Derivatives and the like
 global dni, ddni, dpi, ddpi, p, pni, pf, PF
@@ -172,7 +175,7 @@ pressureMethodCoefficient = 7/3     # coefficient of the Holdych correction in t
 
 # Critical point traits
 global tc, nc, pc
-tc = 0.34
+tc = 0.4
 nc = 1.0
 pc = 1.0
 
