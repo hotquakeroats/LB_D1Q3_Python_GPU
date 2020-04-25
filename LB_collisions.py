@@ -8,45 +8,25 @@ def calculateMassAndVelocities():
     lbg.n1 = lbg.f1_0 + lbg.f1_1 + lbg.f1_2
     lbg.u1 = (lbg.f1_1 - lbg.f1_2) / lbg.n1
     lbg.uHat1 = lbg.u1 + 0.5 / lbg.n1 * lbg.F1
-
-
-def calculatePressures():
+    
+    # Density gradients needed elsewhere
     lbg.gradN1[1:-1] = lbg.n1
     lbg.gradN1[0] = lbg.n1[-1]
     lbg.gradN1[-1] = lbg.gradN1[0]
     lbg.gradN1 = numpy.gradient(lbg.gradN1)
-    
-    ###
-    # TODO: test applying gradient twice vs own 2nd derivative function
-    
-#     print(lbg.gradN1[1:-1]-lbg.n1)
-#     lbg.pressure = lbg.n1*lbg.theta/(1-lbg.b1*lbg.n1) - lbg.a1*lbg.n1*lbg.n1 - lbg.kappa*lbg.n1*laplace(n1,i) + 0.5*lbg.kappa*gradient(n1,i)*gradient(n1,i)
+    lbg.laplaceN1 = numpy.gradient(lbg.gradN1)
 
 
-# def calculateChemicalPotentials():
-#     if (useChemicalPotentialCriticalParameters):
-#         for (i = 0 i < XDIM i++):
-#             if (n1[i] != 0):
-#                 mu1[i] = gammaMu * (-theta*log(1./n1[i]-1./(3*nc)) + theta/(1-(n1[i]/(3*nc))) - (9./4.)*tc*n1[i]/nc - kappa*laplace(n1,i))
-#             else:
-#                 mu1[i] = 0 # TODO: Is zeroing this out having an adverse effect?
-# 
-#             muCriticalConstants1[i] = mu1[i]
-#     elif (!useChemicalPotentialCriticalParameters):
-#         # These chemical potentials need density gradients, so calculate them separately
-#         for (i = 0 i < XDIM i++):
-#             tmp = 1.-b1*n1[i] #-b2*n2[i]
-#             if (tmp < 0):
-#                 lnExplosion = 1
-#                 printf("LN EXPLOSION!!\t%f\n", tmp)
-# 
-#             mu1[i] = gammaMu * ( theta*log(n1[i]/(1.-b1*n1[i])) + theta*b1*n1[i]/(1.-b1*n1[i]) + theta - 2.*a1*n1[i] - kappa*laplace(n1,i) )
-#             muVDWConstants1[i] = mu1[i]
-# 
-#     # These chemical potentials need density gradients, so calculate them separately
-#     for (i = 0 i < XDIM i++):
-#         muNonIdeal1[i] = mu1[i] - theta*log(n1[i])
-#         muCCMinusVDW1[i] = muCriticalConstants1[i] - muVDWConstants1[i]
+def calculatePressures():
+    lbg.pressure = lbg.n1*lbg.theta/(1-lbg.b1*lbg.n1) - lbg.a1*lbg.n1*lbg.n1 - \
+        lbg.kappa*lbg.n1*lbg.laplaceN1[1:-1] + 0.5*lbg.kappa*lbg.gradN1[1:-1]*lbg.gradN1[1:-1]
+
+
+def calculateChemicalPotentials():
+    if 1-lbg.b1*lbg.n1.any() < 0: print("LN EXPLOSION!!")
+    lbg.mu1 = lbg.gammaMu * ( lbg.theta*numpy.log(lbg.n1/(1-lbg.b1*lbg.n1)) + lbg.theta*lbg.b1*lbg.n1/(1-lbg.b1*lbg.n1) + \
+                              lbg.theta - 2*lbg.a1*lbg.n1 - lbg.kappa*lbg.laplaceN1[1:-1] )
+    lbg.muNonIdeal1= lbg.mu1 - lbg.theta*numpy.log(lbg.n1)
 
 
 def collisionForcingNewPressureGradient():
@@ -122,28 +102,10 @@ def collisionPressureMethod():
 
 
 def collisionForcingNewChemicalPotentialGradient():
-#     print("collisionForcingNewChemicalPotentialGradient")
-#     i = 0
-#  
-#     iterations++
-#  
     calculateMassAndVelocities()
-    
-#     print(lbg.n1)
-#     profile = cProfile.Profile()
-#     profile.enable()
-        
     calculatePressures()
-    
-#     profile.disable()
-#     profile.print_stats(sort='time') 
-#     print(lbg.n1)
-#     calculateChemicalPotentials()
-#  
-#     for (i = 0 i < XDIM i++):
-#         pressureGradMuMethod[i] = pressure[i]
-#         muGradMuMethod[i] = mu1[i]
-#  
+    calculateChemicalPotentials()
+  
 #     # Forcing derived from chemical potential gradients... a la Gibbs-Duhem (sum of both equals pressure gradient)
 #     if (useChemicalPotentialNonIdeal): # gradient of non-ideal mu
 #         for (i = 0 i < XDIM i++):
@@ -151,13 +113,6 @@ def collisionForcingNewChemicalPotentialGradient():
 #     else:
 #         for (i = 0 i < XDIM i++): # gradient of FULL mu minus ideal pressure!
 #             F1[i] = -1. * ( n1[i]*gradient(mu1,i)-theta*gradient(n1,i) ) + n1[i]*g
-#  
-#     for (i = 0 i < XDIM i++):
-#         F1GradMuMethod[i] = F1[i]
-#         F1GradPGradMuDifference[i] = F1GradPMethod[i] - F1GradMuMethod[i]
-#      
-#  
-#     compareGradPRhoGradMu()
 #  
 #     for (i = 0 i < XDIM i++):
 #         # Correction to the equilibrium distribution that alters the actual forcing

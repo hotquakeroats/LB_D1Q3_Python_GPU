@@ -76,8 +76,9 @@ pressureTest4 = numpy.zeros(XDIM)
 pressureTest5 = numpy.zeros(XDIM)
 pressureTest6 = numpy.zeros(XDIM)
 
-global gradN1
+global gradN1, laplaceN1
 gradN1 = numpy.zeros(XDIM+2)
+laplaceN1 = numpy.zeros(XDIM+2)
 
 # Derivatives and the like
 global dni, ddni, dpi, ddpi, p, pni, pf, PF

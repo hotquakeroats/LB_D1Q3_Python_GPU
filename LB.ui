@@ -853,6 +853,9 @@
       </attribute>
      </widget>
      <widget class="QRadioButton" name="radioPressCritConst">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>215</x>
@@ -869,6 +872,9 @@
       </attribute>
      </widget>
      <widget class="QRadioButton" name="radioChemPotCritConst">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>215</x>
@@ -1211,10 +1217,10 @@
   </connection>
  </connections>
  <buttongroups>
+  <buttongroup name="buttonGroupPressCalc"/>
   <buttongroup name="buttonGroupAlgorithms"/>
-  <buttongroup name="buttonGroupChemPotMethod"/>
   <buttongroup name="buttonGroupChemPotCalc"/>
   <buttongroup name="buttonGroupDensityProfile"/>
-  <buttongroup name="buttonGroupPressCalc"/>
+  <buttongroup name="buttonGroupChemPotMethod"/>
  </buttongroups>
 </ui>
