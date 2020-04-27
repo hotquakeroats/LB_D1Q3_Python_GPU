@@ -11,7 +11,7 @@ def calculateMassAndVelocities():
     # Density gradients needed elsewhere
     lbg.gradN1[1:-1] = lbg.n1
     lbg.gradN1[0] = lbg.n1[-1]
-    lbg.gradN1[-1] = lbg.gradN1[0]
+    lbg.gradN1[-1] = lbg.n1[0]
     lbg.gradN1 = numpy.gradient(lbg.gradN1)
     lbg.laplaceN1 = numpy.gradient(lbg.gradN1)
 
@@ -118,13 +118,13 @@ def collisionForcingNewChemicalPotentialGradient():
   
     # Forcing derived from chemical potential gradients... a la Gibbs-Duhem (sum of both equals pressure gradient)
     if (lbg.useChemicalPotentialNonIdeal): # gradient of non-ideal mu
-        lbg.F1 = -1.*lbg.n1*lbg.gradMuNonIdeal1[1:-1] + lbg.n1*lbg.g
+        lbg.F1 = -1*lbg.n1*lbg.gradMuNonIdeal1[1:-1] + lbg.n1*lbg.g
     else:   # gradient of FULL mu minus ideal pressure!
-        lbg.F1 = -1. * ( lbg.n1*lbg.gradMu1[1:-1]-lbg.theta*lbg.gradMu1[1:-1] ) + lbg.n1*lbg.g
+        lbg.F1 = -1*( lbg.n1*lbg.gradMu1[1:-1]-lbg.theta*lbg.gradN1[1:-1] ) + lbg.n1*lbg.g
   
         # Correction to the equilibrium distribution that alters the actual forcing
 #         if (n1[i] !=0):
-    lbg.psi1 = -lbg.oneOverTau * ( lbg.tau-0.25*lbg.F1*lbg.F1/lbg.n1 + (1/12)*lbg.laplaceN1[1:-1] )    # subtract psi, so minus sign relative to paper
+    lbg.psi1 = -lbg.oneOverTau * ( (lbg.tau-0.25)*lbg.F1*lbg.F1/lbg.n1 + (1/12)*lbg.laplaceN1[1:-1] )    # subtract psi, so minus sign relative to paper
 #         else:
 #             psi1[i] = 0
   
@@ -136,38 +136,6 @@ def collisionForcingNewChemicalPotentialGradient():
     lbg.f1_2 += lbg.oneOverTau * ( 0.5*(lbg.n1*lbg.u1*lbg.u1 - lbg.n1*lbg.u1 + lbg.n1*lbg.theta) - lbg.f1_2 ) - \
                                  ( -lbg.F1*lbg.u1 + 0.5*lbg.F1 + 0.5*lbg.psi1 )
     
-
-# TODO: dynamic kappa, gammaP/gammaMu values
-# TODO: sync up changes from this single component code with the multi-component code
-# TODO: look at relative stability among the 3 methods (pressure, gradP, gradMu)
-# TODO: even/odd lattice problem comments for thesis
-# def streaming():
-# 
-#     tmp
-# 
-#     # Original wrap-around end points 
-# 
-#     tmp=f1_1[XDIM-1]                                   # save right end point
-#     memmove(&f1_1[1],&f1_1[0],(XDIM-1)*sizeof(double)) # shift all cells +1
-#     f1_1[0]=tmp                                        # rotate former end to first lattice cell
-#     tmp=f1_2[0]                                        # save left end point
-#     memmove(&f1_2[0],&f1_2[1],(XDIM-1)*sizeof(double)) # shift all cells -1
-#     f1_2[XDIM-1]=tmp                                   # rotate former first lattice cell to end
-# 
-#     # Walls at the end points 
-#     # Bounce from lattice origin (0)
-#     if (!useBoundaryConditionsPeriodic):
-#         tmp = f1_1[0]
-#         f1_1[0] = f1_2[XDIM-1]
-#         f1_2[XDIM-1]=tmp
-# 
-#     # Switching cells to simulate wall between lattice spots [wall-1]|[wall] 
-#     # TODO: this works for wall == 1 (correct) through wall == XDIM (bug)... should be restricted to wall == 1 through XDIM-1
-#     if (wall > 0):
-#         tmp = f1_1[wall]
-#         f1_1[wall] = f1_2[(wall-1+XDIM)%XDIM]
-#         f1_2[(wall-1+XDIM)%XDIM] = tmp
-
 
 collision_dictionary = {
     "collisionForcingNewChemicalPotentialGradient" : collisionForcingNewChemicalPotentialGradient,
@@ -194,6 +162,6 @@ def iteration():
     lbg.nc = lbg.pc / ((3/8)*lbg.tc)
     lbg.a1 = (27/64) * (lbg.tc*lbg.tc/lbg.pc)
     lbg.b1 = lbg.tc /(8*lbg.pc)
-# 
+ 
     collision_algorithm()
     streaming()
