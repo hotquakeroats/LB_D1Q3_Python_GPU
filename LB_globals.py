@@ -193,14 +193,14 @@ useBoundaryConditionsPeriodic = True    # default periodic BCs
 autoKappaGammaMu = True
 
 # GUI
-global next_step, run_sim, exit_sim, step_size, iterations, collectData, wall, phase_iterations
+global next_step, run_sim, useStepStop, exit_sim, step_size, iterations, collectData, wall, phase_iterations
 next_step = 0
 run_sim = False
-# exit_sim = False
+useStepStop = False
 step_size = 10
 iterations = 0
 collectData = 0
-iter_size = 100000
+# iter_size = 100000
 iter_stop = 0
 
 
@@ -210,7 +210,6 @@ iter_stop = 0
 
 def init_ui_vars(window):
     window.lineEditStepSize.setText(str(step_size))
-    window.lineEditIterSize.setText(str(iter_size))
     
     window.lineEditN1Liquid.setText(str(n1_liquid))
     window.lineEditN1Vapor.setText(str(n1_vapor))

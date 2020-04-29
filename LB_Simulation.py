@@ -31,7 +31,7 @@ class LB_Simulation(QtWidgets.QMainWindow):
         
     def connect_controls(self):
         self.ui.stepButton.clicked.connect(lambda : self.iterate_step(int(self.ui.lineEditStepSize.text())))
-        self.ui.startSimButton.clicked.connect(lambda : self.iterate_step(int(self.ui.lineEditIterSize.text())))
+        self.ui.startSimButton.clicked.connect(lambda : self.iterate_step(None))
         self.ui.initializeButton.clicked.connect(self.init_sim)
         
         # Trap toggle of 1 button from 2-button group to initialize density profile
@@ -82,7 +82,10 @@ class LB_Simulation(QtWidgets.QMainWindow):
     def iterate_step(self, step_size):
         if lbg.iterations > lbg.iter_stop:    # catch if step above the stop
             lbg.iter_stop = lbg.iterations
-        lbg.iter_stop += step_size    # set for the next chunk of iterations        
+            
+        if step_size is not None:
+            lbg.useStepStop = True
+            lbg.iter_stop += step_size    # set for the next chunk of iterations        
         
         # TODO: Is a new thread created with each click??        
         step_iterator = LB_Iteration()
@@ -100,8 +103,9 @@ class LB_Iteration(QtCore.QRunnable):
 #         profile.enable()
         lbg.run_sim = True if lbg.run_sim == False else False # toggle every button press
         while(lbg.run_sim):
-            if (lbg.iterations >= lbg.iter_stop):
+            if (lbg.useStepStop and lbg.iterations >= lbg.iter_stop):
                 lbg.run_sim = False
+                lbg.useStepStop = False
             else: 
                 lbg.iterations += 1
                 LB_collisions.iteration()
