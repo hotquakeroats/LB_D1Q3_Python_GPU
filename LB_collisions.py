@@ -1,87 +1,42 @@
-from LB_globals import *
+import LB_globals as lbg
+import numpy
 
 
+def calculateMassAndVelocities():
+    # Sweep across the lattice to conserve mass and determine the pressures at each cell
+    lbg.n1 = lbg.f1_0 + lbg.f1_1 + lbg.f1_2
+    lbg.u1 = (lbg.f1_1 - lbg.f1_2) / lbg.n1
+    lbg.uHat1 = lbg.u1 + 0.5 / lbg.n1 * lbg.F1
+    
+    # Density gradients needed elsewhere
+    lbg.gradN1[1:-1] = lbg.n1
+    lbg.gradN1[0] = lbg.n1[-1]
+    lbg.gradN1[-1] = lbg.n1[0]
+    lbg.gradN1 = numpy.gradient(lbg.gradN1)
+    lbg.laplaceN1 = numpy.gradient(lbg.gradN1)
 
-# def calculateMassAndVelocities():
-#     # Sweep across the lattice to conserve mass and determine the pressures at each cell
-#     for (i = 0 i < XDIM i++):
-#         n1[i] = f1_0[i] + f1_1[i] + f1_2[i]         # 1st component mass density for this step
-# 
-#         if (n1[i] != 0):
-#             u1[i] = (f1_1[i]-f1_2[i]) / n1[i]
-# 
-#             # Correction to the display of the mean fluid velocity
-#             # Needed for the forcing methods (pressure method is good with the above)
-#             uHat1[i] = u1[i] + 0.5/n1[i]*F1[i]
-#         else:
-#             u1[i] = 0
-# 
-# 
-# def calculatePressures():
-#     i
-#     ip = 0
-#     im = 0
-#     omega = 1./oneOverTau
-# 
-#     # Functions to calculate pressures, partial and full
-#     calculatePressurePartial()
-#     calculatePressureTest()
-# 
-#     for (i = 0 i < XDIM i++):
-#         pressureCCMinusVDW[i] = pressureCriticalConstants[i] - pressureVDWConstants[i]
-# 
-#     # For comparison, these loops calculate pressures in the same manner as Alexander's code
-#     # Modified to include the gamma "modulation"
-#     for (i = 0 i < XDIM i++):
-#         ip=(i+1)%XDIM
-#         im=(i+XDIM-1)%XDIM
-# 
-#         dni[i]=gradient(n1,i)
-#         ddni[i]=laplace(n1,i)
-# 
-#         pni[i]=Pni(n1[i],dni[i],ddni[i])
-#         p[i] = P(n1[i],dni[i],ddni[i])
-# 
-#         p[i] *= gammaP
-#         pni[i] *= gammaP
-# 
-#     for (i = 0 i < XDIM i++):
-#         ip=(i+1)%XDIM
-#         im=(i+XDIM-1)%XDIM
-# 
-#         dpi[i]=gradient(pni,i)
-#         ddpi[i]=laplace(p,i)
-# 
-#         Forces[i]=-dpi[i]
-# 
-#         pf[i]=p[i]-0.25*Forces[i]*Forces[i]/n1[i]-(1./omega-0.5)*Forces[i]*Forces[i]/n1[i]+0.25*ddpi[i]-1./12.*ddni[i]
-#         PF[i]=p[i]+0.25*Forces[i]*Forces[i]/n1[i]+0.25*ddpi[i]-1./12.*ddni[i]
-# 
-# 
-# def calculateChemicalPotentials():
-#     if (useChemicalPotentialCriticalParameters):
-#         for (i = 0 i < XDIM i++):
-#             if (n1[i] != 0):
-#                 mu1[i] = gammaMu * (-theta*log(1./n1[i]-1./(3*nc)) + theta/(1-(n1[i]/(3*nc))) - (9./4.)*tc*n1[i]/nc - kappa*laplace(n1,i))
-#             else:
-#                 mu1[i] = 0 # TODO: Is zeroing this out having an adverse effect?
-# 
-#             muCriticalConstants1[i] = mu1[i]
-#     elif (!useChemicalPotentialCriticalParameters):
-#         # These chemical potentials need density gradients, so calculate them separately
-#         for (i = 0 i < XDIM i++):
-#             tmp = 1.-b1*n1[i] #-b2*n2[i]
-#             if (tmp < 0):
-#                 lnExplosion = 1
-#                 printf("LN EXPLOSION!!\t%f\n", tmp)
-# 
-#             mu1[i] = gammaMu * ( theta*log(n1[i]/(1.-b1*n1[i])) + theta*b1*n1[i]/(1.-b1*n1[i]) + theta - 2.*a1*n1[i] - kappa*laplace(n1,i) )
-#             muVDWConstants1[i] = mu1[i]
-# 
-#     # These chemical potentials need density gradients, so calculate them separately
-#     for (i = 0 i < XDIM i++):
-#         muNonIdeal1[i] = mu1[i] - theta*log(n1[i])
-#         muCCMinusVDW1[i] = muCriticalConstants1[i] - muVDWConstants1[i]
+
+def calculatePressures():
+    lbg.pressure = lbg.n1*lbg.theta/(1-lbg.b1*lbg.n1) - lbg.a1*lbg.n1*lbg.n1 - \
+        lbg.kappa*lbg.n1*lbg.laplaceN1[1:-1] + 0.5*lbg.kappa*lbg.gradN1[1:-1]*lbg.gradN1[1:-1]
+
+
+def calculateChemicalPotentials():
+    if 1-lbg.b1*lbg.n1.any() < 0: print("LN EXPLOSION!!")
+    lbg.mu1 = lbg.gammaMu * ( lbg.theta*numpy.log(lbg.n1/(1-lbg.b1*lbg.n1)) + lbg.theta*lbg.b1*lbg.n1/(1-lbg.b1*lbg.n1) + \
+                              lbg.theta - 2*lbg.a1*lbg.n1 - lbg.kappa*lbg.laplaceN1[1:-1] )
+    lbg.muNonIdeal1= lbg.mu1 - lbg.theta*numpy.log(lbg.n1)
+    
+    # Chemical potential gradients needed elsewhere
+    lbg.gradMu1[1:-1] = lbg.mu1
+    lbg.gradMu1[0] = lbg.mu1[-1]
+    lbg.gradMu1[-1] = lbg.mu1[0]
+    lbg.gradMu1 = numpy.gradient(lbg.gradMu1) 
+    
+    lbg.gradMuNonIdeal1[1:-1] = lbg.muNonIdeal1
+    lbg.gradMuNonIdeal1[0] = lbg.muNonIdeal1[-1]
+    lbg.gradMuNonIdeal1[-1] = lbg.muNonIdeal1[0]
+    lbg.gradMuNonIdeal1 = numpy.gradient(lbg.gradMuNonIdeal1) 
 
 
 def collisionForcingNewPressureGradient():
@@ -157,78 +112,30 @@ def collisionPressureMethod():
 
 
 def collisionForcingNewChemicalPotentialGradient():
-    print("collisionForcingNewChemicalPotentialGradient")
-#     i = 0
-#  
-#     iterations++
-#  
-#     calculateMassAndVelocities()
-#     calculatePressures()
-#     calculateChemicalPotentials()
-#  
-#     for (i = 0 i < XDIM i++):
-#         pressureGradMuMethod[i] = pressure[i]
-#         muGradMuMethod[i] = mu1[i]
-#  
-#     # Forcing derived from chemical potential gradients... a la Gibbs-Duhem (sum of both equals pressure gradient)
-#     if (useChemicalPotentialNonIdeal): # gradient of non-ideal mu
-#         for (i = 0 i < XDIM i++):
-#             F1[i] = -1.*n1[i]*gradient(muNonIdeal1,i) + n1[i]*g
-#     else:
-#         for (i = 0 i < XDIM i++): # gradient of FULL mu minus ideal pressure!
-#             F1[i] = -1. * ( n1[i]*gradient(mu1,i)-theta*gradient(n1,i) ) + n1[i]*g
-#  
-#     for (i = 0 i < XDIM i++):
-#         F1GradMuMethod[i] = F1[i]
-#         F1GradPGradMuDifference[i] = F1GradPMethod[i] - F1GradMuMethod[i]
-#      
-#  
-#     compareGradPRhoGradMu()
-#  
-#     for (i = 0 i < XDIM i++):
-#         # Correction to the equilibrium distribution that alters the actual forcing
+    calculateMassAndVelocities()
+    calculatePressures()
+    calculateChemicalPotentials()
+  
+    # Forcing derived from chemical potential gradients... a la Gibbs-Duhem (sum of both equals pressure gradient)
+    if (lbg.useChemicalPotentialNonIdeal): # gradient of non-ideal mu
+        lbg.F1 = -1*lbg.n1*lbg.gradMuNonIdeal1[1:-1] + lbg.n1*lbg.g
+    else:   # gradient of FULL mu minus ideal pressure!
+        lbg.F1 = -1*( lbg.n1*lbg.gradMu1[1:-1]-lbg.theta*lbg.gradN1[1:-1] ) + lbg.n1*lbg.g
+  
+        # Correction to the equilibrium distribution that alters the actual forcing
 #         if (n1[i] !=0):
-#             psi1[i] = -oneOverTau * ( (tau-(1./4.))*F1[i]*F1[i]/n1[i] + (1./12.)*laplace(n1,i) )    # subtract psi, so minus sign relative to paper
+    lbg.psi1 = -lbg.oneOverTau * ( (lbg.tau-0.25)*lbg.F1*lbg.F1/lbg.n1 + (1/12)*lbg.laplaceN1[1:-1] )    # subtract psi, so minus sign relative to paper
 #         else:
 #             psi1[i] = 0
-#  
-#         # Calculate particle densities at current lattice spot with forcing included
-#         f1_0[i] += oneOverTau * ( (n1[i] - n1[i]*theta - n1[i]*u1[i]*u1[i]) - f1_0[i] ) - ( 2.*F1[i]*u1[i] - psi1[i] )
-#         f1_1[i] += oneOverTau * ( (1./2.)*(n1[i]*u1[i]*u1[i]+n1[i]*u1[i]+n1[i]*theta)-f1_1[i]) - ( -F1[i]*u1[i] - (1./2.)*F1[i] + (1./2.)*psi1[i] )
-#         f1_2[i] += oneOverTau * ( (1./2.)*(n1[i]*u1[i]*u1[i]-n1[i]*u1[i]+n1[i]*theta)-f1_2[i]) - ( -F1[i]*u1[i] + (1./2.)*F1[i] + (1./2.)*psi1[i] )
+  
+    # Calculate particle densities at current lattice spot with forcing included
+    lbg.f1_0 += lbg.oneOverTau * ( (lbg.n1 - lbg.n1*lbg.theta - lbg.n1*lbg.u1*lbg.u1) - lbg.f1_0 ) - \
+                                 ( 2*lbg.F1*lbg.u1 - lbg.psi1 )
+    lbg.f1_1 += lbg.oneOverTau * ( 0.5*(lbg.n1*lbg.u1*lbg.u1 + lbg.n1*lbg.u1 + lbg.n1*lbg.theta) - lbg.f1_1 ) - \
+                                 ( -lbg.F1*lbg.u1 - 0.5*lbg.F1 + 0.5*lbg.psi1 )
+    lbg.f1_2 += lbg.oneOverTau * ( 0.5*(lbg.n1*lbg.u1*lbg.u1 - lbg.n1*lbg.u1 + lbg.n1*lbg.theta) - lbg.f1_2 ) - \
+                                 ( -lbg.F1*lbg.u1 + 0.5*lbg.F1 + 0.5*lbg.psi1 )
     
-
-# TODO: dynamic kappa, gammaP/gammaMu values
-# TODO: sync up changes from this single component code with the multi-component code
-# TODO: look at relative stability among the 3 methods (pressure, gradP, gradMu)
-# TODO: even/odd lattice problem comments for thesis
-# def streaming():
-# 
-#     tmp
-# 
-#     # Original wrap-around end points 
-# 
-#     tmp=f1_1[XDIM-1]                                   # save right end point
-#     memmove(&f1_1[1],&f1_1[0],(XDIM-1)*sizeof(double)) # shift all cells +1
-#     f1_1[0]=tmp                                        # rotate former end to first lattice cell
-#     tmp=f1_2[0]                                        # save left end point
-#     memmove(&f1_2[0],&f1_2[1],(XDIM-1)*sizeof(double)) # shift all cells -1
-#     f1_2[XDIM-1]=tmp                                   # rotate former first lattice cell to end
-# 
-#     # Walls at the end points 
-#     # Bounce from lattice origin (0)
-#     if (!useBoundaryConditionsPeriodic):
-#         tmp = f1_1[0]
-#         f1_1[0] = f1_2[XDIM-1]
-#         f1_2[XDIM-1]=tmp
-# 
-#     # Switching cells to simulate wall between lattice spots [wall-1]|[wall] 
-#     # TODO: this works for wall == 1 (correct) through wall == XDIM (bug)... should be restricted to wall == 1 through XDIM-1
-#     if (wall > 0):
-#         tmp = f1_1[wall]
-#         f1_1[wall] = f1_2[(wall-1+XDIM)%XDIM]
-#         f1_2[(wall-1+XDIM)%XDIM] = tmp
-
 
 collision_dictionary = {
     "collisionForcingNewChemicalPotentialGradient" : collisionForcingNewChemicalPotentialGradient,
@@ -241,16 +148,20 @@ collision_algorithm = collisionForcingNewChemicalPotentialGradient
 def set_collision(collision):
     global collision_algorithm
     collision_algorithm = collision_dictionary[collision]
+    
+    
+def streaming():
+    lbg.f1_1 = numpy.roll(lbg.f1_1,1)
+    lbg.f1_2 = numpy.roll(lbg.f1_2,-1)
 
 
 def iteration():
     # Need to reset the critical and VDW constants each iteration
     # Keeps them all in sync if one is changed during a simulation
-    pc = 3*tc/8
-    nc = pc / ((3/8)*tc)
-    a1 = (27/64)*(tc*tc/pc)
-    b1 = tc/(8*pc)
-# 
+    lbg.pc = 3 *lbg.tc / 8
+    lbg.nc = lbg.pc / ((3/8)*lbg.tc)
+    lbg.a1 = (27/64) * (lbg.tc*lbg.tc/lbg.pc)
+    lbg.b1 = lbg.tc /(8*lbg.pc)
+ 
     collision_algorithm()
-#     streaming()
-
+    streaming()

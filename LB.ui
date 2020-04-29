@@ -81,9 +81,9 @@
     <widget class="QPushButton" name="startSimButton">
      <property name="geometry">
       <rect>
-       <x>170</x>
+       <x>10</x>
        <y>70</y>
-       <width>141</width>
+       <width>301</width>
        <height>23</height>
       </rect>
      </property>
@@ -853,6 +853,9 @@
       </attribute>
      </widget>
      <widget class="QRadioButton" name="radioPressCritConst">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>215</x>
@@ -869,6 +872,9 @@
       </attribute>
      </widget>
      <widget class="QRadioButton" name="radioChemPotCritConst">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>215</x>
@@ -916,7 +922,7 @@
        <string>NID</string>
       </property>
       <property name="checked">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <attribute name="buttonGroup">
        <string notr="true">buttonGroupChemPotMethod</string>
@@ -933,6 +939,9 @@
       </property>
       <property name="text">
        <string>Log Method</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
       </property>
       <attribute name="buttonGroup">
        <string notr="true">buttonGroupChemPotMethod</string>
@@ -964,35 +973,6 @@
        <string>Chemical Potential</string>
       </property>
      </widget>
-    </widget>
-    <widget class="QLabel" name="labelIterSize">
-     <property name="geometry">
-      <rect>
-       <x>15</x>
-       <y>65</y>
-       <width>47</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Iteration Size</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEditIterSize">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>72</y>
-       <width>91</width>
-       <height>20</height>
-      </rect>
-     </property>
     </widget>
    </widget>
    <widget class="QSplitter" name="splitterGraphConfig">
@@ -1211,10 +1191,10 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="buttonGroupAlgorithms"/>
-  <buttongroup name="buttonGroupChemPotMethod"/>
-  <buttongroup name="buttonGroupChemPotCalc"/>
   <buttongroup name="buttonGroupDensityProfile"/>
+  <buttongroup name="buttonGroupChemPotMethod"/>
   <buttongroup name="buttonGroupPressCalc"/>
+  <buttongroup name="buttonGroupChemPotCalc"/>
+  <buttongroup name="buttonGroupAlgorithms"/>
  </buttongroups>
 </ui>

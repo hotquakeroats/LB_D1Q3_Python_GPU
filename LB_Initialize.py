@@ -1,77 +1,77 @@
-import LB_globals
+import LB_globals as lbg
 import numpy
 
 
 def initializeRandom():
-    LB_globals.n1 = LB_globals.n0 + LB_globals.Amp*(numpy.random.rand(LB_globals.XDIM)-0.5)
+    lbg.n1 = lbg.n0 + lbg.Amp*(numpy.random.rand(lbg.XDIM)-0.5)
 
 def initializeSteps():
 
-    interface = 0.5 * LB_globals.XDIM
+    interface = 0.5 * lbg.XDIM
     transition = 0.0
-    rhoA1 = LB_globals.n1_vapor     # theoreticalRhoVapor
-    rhoA2 = LB_globals.n1_liquid    # theoreticalRhoLiquid
+    rhoA1 = lbg.n1_vapor     # theoreticalRhoVapor
+    rhoA2 = lbg.n1_liquid    # theoreticalRhoLiquid
 
-    for i in range(LB_globals.XDIM):
-        if (i < interface-0.25*LB_globals.XDIM):
-            transition = 0.5 + 0.5*numpy.tanh((i%LB_globals.XDIM)/LB_globals.interfaceWidth)
-            LB_globals.n1[i] = (1.0-transition)*rhoA2 + transition*rhoA1
-        elif (interface-0.25*LB_globals.XDIM <= i <= interface+0.25*LB_globals.XDIM):
-            transition = 0.5 + 0.5*numpy.tanh((i-interface)/LB_globals.interfaceWidth)
-            LB_globals.n1[i] = (1.0-transition)*rhoA1 + transition*rhoA2
+    for i in range(lbg.XDIM):
+        if (i < interface-0.25*lbg.XDIM):
+            transition = 0.5 + 0.5*numpy.tanh((i%lbg.XDIM)/lbg.interfaceWidth)
+            lbg.n1[i] = (1.0-transition)*rhoA2 + transition*rhoA1
+        elif (interface-0.25*lbg.XDIM <= i <= interface+0.25*lbg.XDIM):
+            transition = 0.5 + 0.5*numpy.tanh((i-interface)/lbg.interfaceWidth)
+            lbg.n1[i] = (1.0-transition)*rhoA1 + transition*rhoA2
         else:
-            transition = 0.5 + 0.5*numpy.tanh(((i-LB_globals.XDIM)%LB_globals.XDIM)/LB_globals.interfaceWidth)
-            LB_globals.n1[i] = (1.0-transition)*rhoA1 + transition*rhoA2
+            transition = 0.5 + 0.5*numpy.tanh(((i-lbg.XDIM)%lbg.XDIM)/lbg.interfaceWidth)
+            lbg.n1[i] = (1.0-transition)*rhoA1 + transition*rhoA2
             
 
 def initialize():
     u = 0
 
-    LB_globals.iterations = 0
-    LB_globals.rho1 = 0
-    LB_globals.excludedVolume1 = 0
+    lbg.iterations = 0
+    lbg.rho1 = 0
+    lbg.excludedVolume1 = 0
 
-    LB_globals.pc = 3.*LB_globals.tc/8.    # This is needed to put the original critical parameter formulation on equal footing with the VDW constant formulation
-    LB_globals.nc = LB_globals.pc / ((3./8.)*LB_globals.tc)
+    lbg.pc = 3.*lbg.tc/8.    # This is needed to put the original critical parameter formulation on equal footing with the VDW constant formulation
+    lbg.nc = lbg.pc / ((3./8.)*lbg.tc)
 
     # Reset the values of the VDW constants for each component
-    LB_globals.a1 = (27./64.)*(LB_globals.tc*LB_globals.tc/LB_globals.pc)
-    LB_globals.b1 = LB_globals.tc/(8.*LB_globals.pc)
+    lbg.a1 = (27./64.)*(lbg.tc*lbg.tc/lbg.pc)
+    lbg.b1 = lbg.tc/(8.*lbg.pc)
 
-    if (LB_globals.useDensityProfileStep):
+    if (lbg.useDensityProfileStep):
         initializeSteps()
     else:
         initializeRandom()
 
-    LB_globals.u1 = numpy.zeros(LB_globals.XDIM)
-    LB_globals.uHat1 = numpy.zeros(LB_globals.XDIM)
+    lbg.u1 = numpy.zeros(lbg.XDIM)
+    lbg.uHat1 = numpy.zeros(lbg.XDIM)
 
     # Initialize 1st component
-    LB_globals.f1_0 = LB_globals.n1 - LB_globals.n1*LB_globals.T0 - LB_globals.n1*u*u   # zero velocity
-    LB_globals.f1_1 = (1./2) * (LB_globals.n1*u*u + LB_globals.n1*u + LB_globals.n1*LB_globals.T0)  # +1 velocity (moving right)
-    LB_globals.f1_2 = (1./2) * (LB_globals.n1*u*u - LB_globals.n1*u + LB_globals.n1*LB_globals.T0)  # -1 velocity (moving left)
+    lbg.f1_0 = lbg.n1 - lbg.n1*lbg.T0 - lbg.n1*u*u   # zero velocity
+    lbg.f1_1 = (1./2) * (lbg.n1*u*u + lbg.n1*u + lbg.n1*lbg.T0)  # +1 velocity (moving right)
+    lbg.f1_2 = (1./2) * (lbg.n1*u*u - lbg.n1*u + lbg.n1*lbg.T0)  # -1 velocity (moving left)
 
-    LB_globals.mu1 = numpy.zeros(LB_globals.XDIM)
-    LB_globals.muNonIdeal1 = numpy.zeros(LB_globals.XDIM)
+    lbg.mu1 = numpy.zeros(lbg.XDIM)
+    lbg.muNonIdeal1 = numpy.zeros(lbg.XDIM)
 
-    LB_globals.A = numpy.zeros(LB_globals.XDIM)
+    lbg.A = numpy.zeros(lbg.XDIM)
 
-    LB_globals.pressure = numpy.zeros(LB_globals.XDIM)
-    LB_globals.pressure1 = numpy.zeros(LB_globals.XDIM)
-    LB_globals.pressureNonIdeal1 = numpy.zeros(LB_globals.XDIM)
-    LB_globals.pressureCorrected1 = numpy.zeros(LB_globals.XDIM)
-    LB_globals.p = numpy.zeros(LB_globals.XDIM)
-    LB_globals.pni = numpy.zeros(LB_globals.XDIM)
-    LB_globals.pf = numpy.zeros(LB_globals.XDIM)
-    LB_globals.PF = numpy.zeros(LB_globals.XDIM)
-    LB_globals.ddni = numpy.zeros(LB_globals.XDIM)
+    lbg.pressure = numpy.zeros(lbg.XDIM)
+    lbg.pressure1 = numpy.zeros(lbg.XDIM)
+    lbg.pressureNonIdeal1 = numpy.zeros(lbg.XDIM)
+    lbg.pressureCorrected1 = numpy.zeros(lbg.XDIM)
+    lbg.p = numpy.zeros(lbg.XDIM)
+    lbg.pni = numpy.zeros(lbg.XDIM)
+    lbg.pf = numpy.zeros(lbg.XDIM)
+    lbg.PF = numpy.zeros(lbg.XDIM)
+    lbg.ddni = numpy.zeros(lbg.XDIM)
     
     # Set the total density and excluded volume constants for the VDW equations
-    LB_globals.excludedVolume1 = numpy.sum(LB_globals.n1) * LB_globals.b1
+    lbg.excludedVolume1 = numpy.sum(lbg.n1) * lbg.b1
 # end function initialize()
 
 # if __name__ == "__main__":
-#     print(LB_globals.n1.shape)
+#     print(lbg.n1.shape)
 #     initializeRandom()
-#     print(LB_globals.n1)
+#     print(lbg.n1)
     
