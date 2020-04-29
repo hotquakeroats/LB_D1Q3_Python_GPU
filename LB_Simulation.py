@@ -33,6 +33,7 @@ class LB_Simulation(QtWidgets.QMainWindow):
         self.ui.stepButton.clicked.connect(lambda : self.iterate_step(int(self.ui.lineEditStepSize.text())))
         self.ui.startSimButton.clicked.connect(lambda : self.iterate_step(None))
         self.ui.initializeButton.clicked.connect(self.init_sim)
+
         
         # Trap toggle of 1 button from 2-button group to initialize density profile
         self.ui.radioDensityProfileRandom.toggled.connect(self.init_density_profile)
@@ -41,9 +42,10 @@ class LB_Simulation(QtWidgets.QMainWindow):
         self.ui.radioForceNewGradMu.clicked.connect(lambda : LB_collisions.set_collision("collisionForcingNewChemicalPotentialGradient"))
         self.ui.radioForceNewGradP.clicked.connect(lambda : LB_collisions.set_collision("collisionForcingNewPressureGradient")) 
         self.ui.radioPressureMethod.clicked.connect(lambda : LB_collisions.set_collision("collisionPressureMethod"))
-        
+
         # Grad-Mu NID or Log method
         self.ui.radioChemPotLogMethod.toggled.connect(self.select_gradMu_forcing)
+
         
     def update_ui_vars(self):
         self.ui.lcdIterations.display(lbg.iterations)    # TODO: (maybe fix?) crashes @ 2.147 billion
@@ -64,7 +66,7 @@ class LB_Simulation(QtWidgets.QMainWindow):
         lbg.iter_stop = 0
         lbg.iterations = 0
         LB_Initialize.initialize()
-        
+
         self.ui.widgetDensityPlot.setXRange(0, lbg.XDIM, padding=0)
         self.ui.widgetDensityPlot.setYRange(0, 2, padding=0)
         self.ui.widgetDensityPlot.clear()
@@ -93,7 +95,7 @@ class LB_Simulation(QtWidgets.QMainWindow):
             
             
 class LB_Iteration(QtCore.QRunnable):
-    
+  
 #     def __init__(self):    # this isn't needed until I override the parent/QRunnable __init__
 #         super().__init__()
     
@@ -111,7 +113,7 @@ class LB_Iteration(QtCore.QRunnable):
                 LB_collisions.iteration()
 #         profile.disable()
 #         profile.print_stats(sort='time')        
-                
+ 
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
