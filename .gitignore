@@ -1,1 +1,4 @@
 __pychache__/
+.settings/
+.project
+.pydevproject
