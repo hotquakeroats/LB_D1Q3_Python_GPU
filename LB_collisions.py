@@ -17,8 +17,16 @@ def calculateMassAndVelocities():
 
 
 def calculatePressures():
+    # Single component pressure
     lbg.pressure = lbg.n1*lbg.theta/(1-lbg.b1*lbg.n1) - lbg.a1*lbg.n1*lbg.n1 - \
         lbg.kappa*lbg.n1*lbg.laplaceN1[1:-1] + 0.5*lbg.kappa*lbg.gradN1[1:-1]*lbg.gradN1[1:-1]
+        
+    lbg.pressureNonIdeal1 = lbg.gammaP * (lbg.pressure - lbg.n1*lbg.theta)  # non-ideal part of pressure (vdw - ideal) provides a force
+    
+    lbg.gradPressureNonIdeal1[1:-1] = lbg.pressureNonIdeal1
+    lbg.gradPressureNonIdeal1[0] = lbg.pressureNonIdeal1[-1]
+    lbg.gradPressureNonIdeal1[-1] = lbg.pressureNonIdeal1[0]
+    lbg.gradPressureNonIdeal1 = numpy.gradient(lbg.gradPressureNonIdeal1)
 
 
 def calculateChemicalPotentials():
@@ -40,75 +48,46 @@ def calculateChemicalPotentials():
 
 
 def collisionForcingNewPressureGradient():
-    print("collisionForcingNewPressureGradient")
-#     i = 0
-# 
-#     iterations++
-# 
-#     calculateMassAndVelocities()
-#     calculatePressures()
-#     calculateChemicalPotentials()
-# 
-#     # Forcing derived from pressure gradients... a la Gibbs-Duhem (pressure gradient - partial pressure - equals chemical potential gradients)
-#     for (i = 0 i < XDIM i++):
-#         # PGF plus gravity term for each component
-#         F1[i] = -1.*gradient(pressureNonIdeal1,i) + n1[i]*g
-# 
-#     # Correction for the effective pressure that is exerted by including the gradient terms
-#     # This correction does not change the PGF it only effects what is displayed in a variable separate from the actual pressure
-#     for (i = 0 i < XDIM i++):
-#         # TODO: the corrected pressure has a bug in the boundary conditions
-#         if (n1[i] != 0):
-#             correctionsPressureDisplay1[i] = -( tau-(1./4.) )*F1[i]*F1[i]/n1[i] + (1./4.)*( laplace(pressure1,i)-theta*laplace(n1,i) )
-#         else:
-#             correctionsPressureDisplay1[i] = 0
-#         
-#         pressureCorrected1[i] = pressure1[i] + correctionsPressureDisplay1[i]    # used to display the effective pressure, not to calculate forces
-#         pressureGradPMethod[i] = pressure[i]
-# 
-#         muGradPMethod[i] = mu1[i]
-#     
-#     for (i = 0 i < XDIM i++):
-#         F1GradPMethod[i] = F1[i]
-#         F1GradPGradMuDifference[i] = F1GradPMethod[i] - F1GradMuMethod[i]
-#     
-#     for (i = 0 i < XDIM i++):
-#         # Correction to the equilibrium distribution that alters the actual PGF to pressure is constant in equilibirum
-#         if (n1[i] !=0):
-#             psi1[i] = -oneOverTau * ( (tau-(1./4.))*F1[i]*F1[i]/n1[i] + (1./12.)*laplace(n1,i) )    # subtract psi, so minus sign relative to paper
-#         else:
-#             psi1[i] = 0
-# 
-#         # Calculate particle densities at current lattice spot with forcing included
-#         f1_0[i] += oneOverTau * ( (n1[i] - n1[i]*theta - n1[i]*u1[i]*u1[i]) - f1_0[i] ) - ( 2.*F1[i]*u1[i] - psi1[i] )
-#         f1_1[i] += oneOverTau * ( (1./2.)*(n1[i]*u1[i]*u1[i]+n1[i]*u1[i]+n1[i]*theta)-f1_1[i] ) - ( -F1[i]*u1[i] - (1./2.)*F1[i] + (1./2.)*psi1[i] )
-#         f1_2[i] += oneOverTau * ( (1./2.)*(n1[i]*u1[i]*u1[i]-n1[i]*u1[i]+n1[i]*theta)-f1_2[i] ) - ( -F1[i]*u1[i] + (1./2.)*F1[i] + (1./2.)*psi1[i] )
+    calculateMassAndVelocities()
+    calculatePressures()
+    calculateChemicalPotentials()
+#  
+    # Forcing derived from pressure gradients... a la Gibbs-Duhem (pressure gradient - partial pressure - equals chemical potential gradients)
+    # PGF plus gravity term for each component
+    lbg.F1 = -lbg.gradPressureNonIdeal1[1:-1] + lbg.n1*lbg.g
+#      
+    # Correction to the equilibrium distribution that alters the actual PGF to pressure is constant in equilibirum
+    lbg.psi1 = -lbg.oneOverTau * ( (lbg.tau-0.25)*lbg.F1*lbg.F1/lbg.n1 + (1/12)*lbg.laplaceN1[1:-1] )    # subtract psi, so minus sign relative to paper
+     
+    # Calculate particle densities at current lattice spot with forcing included    
+    lbg.f1_0 += lbg.oneOverTau * ( (lbg.n1 - lbg.n1*lbg.theta - lbg.n1*lbg.u1*lbg.u1) - lbg.f1_0 ) - \
+                                 ( 2*lbg.F1*lbg.u1 - lbg.psi1 )
+    lbg.f1_1 += lbg.oneOverTau * ( 0.5*(lbg.n1*lbg.u1*lbg.u1 + lbg.n1*lbg.u1 + lbg.n1*lbg.theta) - lbg.f1_1 ) - \
+                                 ( -lbg.F1*lbg.u1 - 0.5*lbg.F1 + 0.5*lbg.psi1 )
+    lbg.f1_2 += lbg.oneOverTau * ( 0.5*(lbg.n1*lbg.u1*lbg.u1 - lbg.n1*lbg.u1 + lbg.n1*lbg.theta) - lbg.f1_2 ) - \
+                                 ( -lbg.F1*lbg.u1 + 0.5*lbg.F1 + 0.5*lbg.psi1 )
 
 
 #
 # This pressure method based on the Holdych-new method cited in Alexander's thermodynamic consistency paper (with the Corr laplace(n) term)
+# TODO: Works, but not stable like original C implementation... had to init with step profile and drop gamma-P to 0.85
 #
 def collisionPressureMethod():
-    print("collisionPressureMethod")
-#     i = 0
-# 
-#     iterations++
-# 
-#     calculateMassAndVelocities()
-#     calculatePressures()
-#     calculateChemicalPotentials()
-# 
-#     for (i = 0 i < XDIM i++):
-#         pressurePressureMethod[i] = pressure[i]
-#         muPressureMethod[i] = mu1[i]
-# 
-#         # Calculate the pressure method correction A
-#         A[i] = pressureNonIdeal1[i] + (tau-0.5)*pressureMethodCoefficient*(n1[i]*u1[i]*gradient(n1,i) / (n1[i] + pressureMethodCorrection*laplace(n1,i)))
-# 
-#         # Calculate particle densities at current lattice spot with pressure method correction included
-#         f1_0[i] += oneOverTau * ( (n1[i] - n1[i]*theta - n1[i]*u1[i]*u1[i] - A[i]) - f1_0[i] )
-#         f1_1[i] += oneOverTau * ( (1./2.)*(n1[i]*u1[i]*u1[i] + n1[i]*u1[i] + n1[i]*theta + A[i]) - f1_1[i] )
-#         f1_2[i] += oneOverTau * ( (1./2.)*(n1[i]*u1[i]*u1[i] - n1[i]*u1[i] + n1[i]*theta + A[i]) - f1_2[i] )
+    calculateMassAndVelocities()
+    calculatePressures()
+    calculateChemicalPotentials()
+
+    # Calculate the pressure method correction A
+#     print(lbg.pressureNonIdeal1)
+    lbg.A = lbg.pressureNonIdeal1 + (lbg.tau-0.5)*lbg.pressureMethodCoefficient*(lbg.n1*lbg.u1*lbg.gradN1[1:-1] / (lbg.n1 + lbg.pressureMethodCorrection*lbg.laplaceN1[1:-1]))
+    
+#     a=f1-f2
+#     A = a*a/n + n/3 + p + (1/omega-0.5)*(dn*a/(n+Corr*ddn)) 
+
+    # Calculate particle densities at current lattice spot with pressure method correction included
+    lbg.f1_0 += lbg.oneOverTau * ( (lbg.n1 - lbg.n1*lbg.theta - lbg.n1*lbg.u1*lbg.u1 - lbg.A) - lbg.f1_0 )
+    lbg.f1_1 += lbg.oneOverTau * ( 0.5*(lbg.n1*lbg.u1*lbg.u1 + lbg.n1*lbg.u1 + lbg.n1*lbg.theta + lbg.A) - lbg.f1_1 )
+    lbg.f1_2 += lbg.oneOverTau * ( 0.5*(lbg.n1*lbg.u1*lbg.u1 - lbg.n1*lbg.u1 + lbg.n1*lbg.theta + lbg.A) - lbg.f1_2 )
 
 
 def collisionForcingNewChemicalPotentialGradient():
@@ -122,11 +101,8 @@ def collisionForcingNewChemicalPotentialGradient():
     else:   # gradient of FULL mu minus ideal pressure!
         lbg.F1 = -1*( lbg.n1*lbg.gradMu1[1:-1]-lbg.theta*lbg.gradN1[1:-1] ) + lbg.n1*lbg.g
   
-        # Correction to the equilibrium distribution that alters the actual forcing
-#         if (n1[i] !=0):
+    # Correction to the equilibrium distribution that alters the actual forcing
     lbg.psi1 = -lbg.oneOverTau * ( (lbg.tau-0.25)*lbg.F1*lbg.F1/lbg.n1 + (1/12)*lbg.laplaceN1[1:-1] )    # subtract psi, so minus sign relative to paper
-#         else:
-#             psi1[i] = 0
   
     # Calculate particle densities at current lattice spot with forcing included
     lbg.f1_0 += lbg.oneOverTau * ( (lbg.n1 - lbg.n1*lbg.theta - lbg.n1*lbg.u1*lbg.u1) - lbg.f1_0 ) - \

@@ -29,6 +29,7 @@ class LB_Simulation(QtWidgets.QMainWindow):
         timer.timeout.connect(self.update_ui_vars)
         timer.start(33) # 30 Hz update rate
         
+        
     def connect_controls(self):
         self.ui.stepButton.clicked.connect(lambda : self.iterate_step(int(self.ui.lineEditStepSize.text())))
         self.ui.startSimButton.clicked.connect(lambda : self.iterate_step(None))
@@ -45,12 +46,15 @@ class LB_Simulation(QtWidgets.QMainWindow):
 
         # Grad-Mu NID or Log method
         self.ui.radioChemPotLogMethod.toggled.connect(self.select_gradMu_forcing)
+        
+        self.ui.lineEditGammaP.editingFinished.connect(self.update_gammaP) #lambda : lbg.update_gammaP(float(self.ui.lineEditGammaP.text())))
 
         
     def update_ui_vars(self):
         self.ui.lcdIterations.display(lbg.iterations)    # TODO: (maybe fix?) crashes @ 2.147 billion
         self.update_run_sim_button()
         self.update_density_plot()
+        
         
     def update_run_sim_button(self):
         if (lbg.iterations > 0):
@@ -59,8 +63,10 @@ class LB_Simulation(QtWidgets.QMainWindow):
             else:
                 self.ui.startSimButton.setText("Resume Simulation")
                 
+                
     def update_density_plot(self):
         self.density_plot.setData(lbg.x_axis_labels, lbg.n1)
+                
                 
     def init_sim(self):
         lbg.iter_stop = 0
@@ -74,12 +80,20 @@ class LB_Simulation(QtWidgets.QMainWindow):
         
         self.ui.startSimButton.setText("Start Simulation")
         
+        
     def init_density_profile(self):
         lbg.useDensityProfileStep = not lbg.useDensityProfileStep
         self.init_sim()
         
+        
     def select_gradMu_forcing(self):
         lbg.useChemicalPotentialNonIdeal = not lbg.useChemicalPotentialNonIdeal
+            
+            
+    # TODO: want to move this "setter" function to LB_globals eventually...
+    def update_gammaP(self):
+        lbg.gammaP = float(self.ui.lineEditGammaP.text())
+
 
     def iterate_step(self, step_size):
         if lbg.iterations > lbg.iter_stop:    # catch if step above the stop

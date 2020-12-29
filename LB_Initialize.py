@@ -5,6 +5,7 @@ import numpy
 def initializeRandom():
     lbg.n1 = lbg.n0 + lbg.Amp*(numpy.random.rand(lbg.XDIM)-0.5)
 
+
 def initializeSteps():
 
     interface = 0.5 * lbg.XDIM

@@ -9,10 +9,12 @@ x_axis_labels = list(range(XDIM))
 #
 
 # Equilibrium distribution of each component velocities
+global f1_0, f1_1, f1_2
 f1_0 = numpy.zeros(XDIM)   # the static vector
 f1_1 = numpy.zeros(XDIM)   # +1 lattice space
 f1_2 = numpy.zeros(XDIM)   # -1 lattice space
 
+global psi1
 psi1 = numpy.zeros(XDIM) 
 
 # Number densities of each component
@@ -22,10 +24,12 @@ n1 = numpy.ones(XDIM)   # 1st component mass/density
 # *freeEnergyArray = 
 
 # Component and bulk velocities
+global u1, uHat1
 u1 =  numpy.zeros(XDIM)
 uHat1 =  numpy.zeros(XDIM)
 
 # Component thermodynamic properties
+global mu1, muNonIdeal1
 mu1 = numpy.zeros(XDIM)    # chemical potential
 muNonIdeal1 = numpy.zeros(XDIM)
 muCriticalConstants1 = numpy.zeros(XDIM)
@@ -35,6 +39,7 @@ muGradPMethod = numpy.zeros(XDIM)
 muGradMuMethod = numpy.zeros(XDIM)
 muPressureMethod = numpy.zeros(XDIM)
 
+global pressure
 pressure = numpy.zeros(XDIM)
 pressure1 = numpy.zeros(XDIM)
 pressureNonIdeal1 = numpy.zeros(XDIM)
@@ -56,11 +61,13 @@ pressureTest4 = numpy.zeros(XDIM)
 pressureTest5 = numpy.zeros(XDIM)
 pressureTest6 = numpy.zeros(XDIM)
 
-global gradN1, laplaceN1, gradMu1, gradMuNonIdeal1
+# Definining size to be 2 extra to "halo" the lattice... only use [1:-1] slices of these in calculations
+global gradN1, laplaceN1, gradMu1, gradMuNonIdeal1, gradPressureNonIdeal1
 gradN1 = numpy.zeros(XDIM+2)
 laplaceN1 = numpy.zeros(XDIM+2)
 gradMu1 = numpy.zeros(XDIM+2)
 gradMuNonIdeal1 = numpy.zeros(XDIM+2)
+gradPressureNonIdeal1 = numpy.zeros(XDIM+2)
 
 # Derivatives and the like
 global dni, ddni, dpi, ddpi, p, pni, pf, PF
@@ -80,12 +87,14 @@ F1_1 = numpy.zeros(XDIM)
 F1_2 = numpy.zeros(XDIM)
 
 # Forces on each component =  potential and friction
+global F1
 F1 = numpy.zeros(XDIM)
 F1GradPMethod = numpy.zeros(XDIM)
 F1GradMuMethod = numpy.zeros(XDIM)
 F1GradPGradMuDifference = numpy.zeros(XDIM)
 Forces = numpy.zeros(XDIM)
 
+global A
 A = numpy.zeros(XDIM)  # pressure method change to the density distributions
 
 gradP = numpy.zeros(XDIM)
@@ -123,6 +132,7 @@ dn = 0.0 # delta n for evaporation
 epos = 0  # lattice position at which evaporation occurs
 
 # Equations of motion constants
+global gammaP
 T0 = 0.33333333     # initial theta from write-up
 theta = 1/3
 n0 = 1.0
@@ -163,7 +173,7 @@ global next_step, run_sim, useStepStop, exit_sim, step_size, iterations, collect
 next_step = 0
 run_sim = False
 useStepStop = False
-step_size = 10
+step_size = 1#0
 iterations = 0
 collectData = 0
 # iter_size = 100000
@@ -199,3 +209,8 @@ def init_ui_vars(window):
     window.lineEditHoldychCorrection.setText(str(pressureMethodCoefficient))
     window.lineEditHoldychCorrection.home(False)
     window.lineEditLaplaceCorrection.setText(str(pressureMethodCorrection))
+
+# TODO: can I put my global "setter" functions here?  The print statement prints, but the assignment doesn't stick...
+# def update_gammaP(new_gammaP):
+#     print("blah")
+#     gammaP = new_gammaP
